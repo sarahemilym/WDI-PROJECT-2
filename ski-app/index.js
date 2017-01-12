@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000; //move to config/config
 
 const app = express();
 
-const databaseUrl = process.env.PORT || 'mongodb://localhost:27017/skiing-app';
+const databaseUrl = 'mongodb://localhost:27017/skiing-app';
 mongoose.connect(databaseUrl); //move these to config/config/
 
 app.use(morgan('dev'));
