@@ -4,15 +4,36 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 // const Resort = require('./models/resort');
 const rp = require('request-promise');
-const port = process.env.PORT || 3000; //move to config/config
+const cors = require('cors');
+const expressJWT = require('express-jwt');
+const config = require('./config/config');
+const webRoutes = require('./config/webRoutes');
+const apiRoutes = require('./config/apiRoutes');
 
 const app = express();
 
-const databaseUrl = 'mongodb://localhost:27017/skiing-app';
-mongoose.connect(databaseUrl); //move these to config/config/
+mongoose.connect(config.db);
 
 app.use(morgan('dev'));
 app.use(express.static(`${__dirname}/public`));
+app.use(cors());
+app.use('/api', expressJWT({ secret: config.secret })
+.unless({
+  path: [
+    { url: '/api/login', methods: ['POST'] },
+    { url: '/api/register', methods: ['POST'] }
+  ]
+}));
+app.use(jwtErrorHandler);
+
+function jwtErrorHandler(err, req, res, next){
+  if (err.name !== 'UnauthorizedError') return next();
+  return res.status(401).json({ message: 'Unauthorized request.' + err });
+}
+
+
+app.use('/', webRoutes);
+app.use('/api', apiRoutes);
 
 app.get('/api/resorts', (req, res) => {
   return rp('https://skimap.org/SkiAreas/index.json')
@@ -25,9 +46,4 @@ app.get('/api/resorts', (req, res) => {
   });
 });
 
-
-app.get('/*', (req, res) => {
-  return res.sendFile(`${__dirname}/index.html`);
-});
-
-app.listen(port, () => console.log(`Express is alive and listening on port: ${port}`));
+app.listen(config.port, () => console.log(`Express started on port: ${config.port}`));

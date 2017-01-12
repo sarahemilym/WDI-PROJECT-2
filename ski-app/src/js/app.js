@@ -19,8 +19,31 @@ googleMap.getResorts = function() {
   $.get('http://localhost:3000/resorts').done(this.loopThroughResorts);
 };
 
-googleMap.loopThroughResorts = function(resorts) {
-  console.log(resorts);
+googleMap.loopThroughResorts = function(data) {
+  $.each(data, (i, resort) => {
+    googleMap.createMarkerForResort(resort);
+  });
+};
+
+googleMap.createMarkerForResort = function(resort) {
+  const latlng = new google.maps.LatLng(resort.lat, resort.lng);
+  const marker = new google.maps.Marker({
+    position: latlng,
+    map: this.map
+  });
+  this.addInWindowForResort(resort, marker);
+};
+
+googleMap.addInWindowForResort = function(resort, marker) {
+  google.maps.event.addListener(marker, 'click', () => {
+    if (typeof this.infoWindow !== 'undefined') this.infoWindow.close();
+    this.infoWindow = new google.maps.InfoWindow({
+      content: `<p>${resort.name}</p>`
+    });
+    this.infoWindow.open(this.map, marker);
+    this.map.setCenter(marker.getPosition());
+    this.map.setZoom(15);
+  });
 };
 
 $(googleMap.mapSetup.bind(googleMap));

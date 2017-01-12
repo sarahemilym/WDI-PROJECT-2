@@ -9,11 +9,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^1.0.2",
+    "cors": "^2.8.1",
     "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
     "mongoose": "^4.7.6",
     "morgan": "^1.7.0",
     "request": "^2.79.0",
-    "request-promise": "^4.1.1"
+    "request-promise": "^4.1.1",
+    "validator": "^6.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
