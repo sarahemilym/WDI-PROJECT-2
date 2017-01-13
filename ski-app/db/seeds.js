@@ -1,12 +1,13 @@
 const rp       = require('request-promise');
 const Resort   = require('../models/resort');
 const mongoose = require('mongoose');
+const config     = require('../config/config');
 
-mongoose.connect('mongodb://localhost:27017/skiing-app'); 
+mongoose.connect(config.db);
 
 Resort.collection.drop();
 
-rp('http://localhost:3000/api/resorts')
+rp('https://skimap.org/SkiAreas/index.json')
   .then(htmlString => {
     const json = JSON.parse(htmlString);
     console.log(`${json.length} FOUND`);

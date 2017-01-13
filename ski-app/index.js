@@ -1,30 +1,33 @@
-const express = require('express');
-const morgan = require('morgan');
-const mongoose = require('mongoose');
+const express    = require('express');
+const morgan     = require('morgan');
+const mongoose   = require('mongoose');
+const bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
 // const Resort = require('./models/resort');
-const rp = require('request-promise');
-const cors = require('cors');
+const rp         = require('request-promise');
+const cors       = require('cors');
 const expressJWT = require('express-jwt');
-const config = require('./config/config');
-const webRoutes = require('./config/webRoutes');
-const apiRoutes = require('./config/apiRoutes');
+const config     = require('./config/config');
+const webRoutes  = require('./config/webRoutes');
+const apiRoutes  = require('./config/apiRoutes');
 
 const app = express();
 
 mongoose.connect(config.db);
 
 app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
 app.use(cors());
-app.use('/api', expressJWT({ secret: config.secret })
-.unless({
-  path: [
-    { url: '/api/login', methods: ['POST'] },
-    { url: '/api/register', methods: ['POST'] }
-  ]
-}));
-app.use(jwtErrorHandler);
+// app.use('/api', expressJWT({ secret: config.secret })
+// .unless({
+//   path: [
+//     { url: '/api/login', methods: ['POST'] },
+//     { url: '/api/register', methods: ['POST'] }
+//   ]
+// }));
+// app.use(jwtErrorHandler);
 
 function jwtErrorHandler(err, req, res, next){
   if (err.name !== 'UnauthorizedError') return next();

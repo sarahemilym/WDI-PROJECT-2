@@ -6,7 +6,7 @@ googleMap.mapSetup = function() {
   const canvas = document.getElementById('map-canvas');
 
   const mapOptions = {
-    zoom: 12,
+    zoom: 2,
     center: new google.maps.LatLng(51.490744,-0.140362),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -16,7 +16,7 @@ googleMap.mapSetup = function() {
 };
 
 googleMap.getResorts = function() {
-  $.get('http://localhost:3000/resorts').done(this.loopThroughResorts);
+  $.get('http://localhost:3000/api/resorts').done(this.loopThroughResorts);
 };
 
 googleMap.loopThroughResorts = function(data) {
@@ -25,14 +25,21 @@ googleMap.loopThroughResorts = function(data) {
   });
 };
 
-googleMap.createMarkerForResort = function(resort) {
+googleMap.createMarkerForResort = function(resort, i) {
+  const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const latlng = new google.maps.LatLng(resort.lat, resort.lng);
   const marker = new google.maps.Marker({
     position: latlng,
-    map: this.map
+    map: this.map,
+    label: labels[i % labels.length]
   });
+  var markerCluster = new MarkerClusterer(this.map, marker,
+            {imagePath: '../images/' + this.fileName + '.png'});
   this.addInWindowForResort(resort, marker);
 };
+
+
+
 
 googleMap.addInWindowForResort = function(resort, marker) {
   google.maps.event.addListener(marker, 'click', () => {
@@ -42,7 +49,7 @@ googleMap.addInWindowForResort = function(resort, marker) {
     });
     this.infoWindow.open(this.map, marker);
     this.map.setCenter(marker.getPosition());
-    this.map.setZoom(15);
+    this.map.setZoom(5);
   });
 };
 
