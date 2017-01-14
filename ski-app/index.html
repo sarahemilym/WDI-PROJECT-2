@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJD1ji6i-ejX7SDWGIHH_lYzQrNVsiomc" charset="utf-8"></script>
+  <script src="js/clientauth.js" charset="utf-8"></script>
   <script src="js/app.js" charset="utf-8"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -27,13 +28,13 @@
 <a class="nav-link resortsIndex" href="#">Resorts <span class="sr-only">(current)</span></a>
 </li> -->
 <li class="nav-item">
-<a class="nav-link register" href="#">Register</a>
+<a class="nav-link register loggedOut" href="#">Register</a>
 </li>
 <li class="nav-item">
-<a class="nav-link login" href="#">Login</a>
+<a class="nav-link login loggedOut" href="#">Login</a>
 </li>
 <li class="nav-item">
-<a class="nav-link logout" href="#">Logout</a>
+<a class="nav-link logout loggedIn" href="#">Logout</a>
 </li>
 </ul>
 </div>
@@ -47,6 +48,6 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-<div id="map-canvas"></div>
+<div id="map-canvas" class="loggedIn"></div>
 </body>
 </html>
