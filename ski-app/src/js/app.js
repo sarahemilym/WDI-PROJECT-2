@@ -188,60 +188,71 @@ googleMap.openFlightModal = function() {
   googleMap.findFlights();
 };
 
-    googleMap.findFlights = function() {
-      $('.modal').on('click', '#search', (e) => {
-        console.log('clicked');
-          if (e) e.preventDefault();
+googleMap.findFlights = function() {
+  $('.modal').on('click', '#search', (e) => {
+    console.log('clicked');
+    if (e) e.preventDefault();
 
-        const $origin = $('#flight_origin').val().toString();
-        const $destination = $('#flight_destination').val().toString();
-        const $date = $('#flight_date').val().toString();
-        const $passengers = parseInt($('#flight_passengers').val());
-        console.log(typeof $origin, 'origin')
-        console.log(typeof $destination, 'destination')
-        console.log(typeof $date, 'date', $date)
-        console.log(typeof $passengers, 'passengers')
+    const $origin = $('#flight_origin').val().toString();
+    const $destination = $('#flight_destination').val().toString();
+    const $date = $('#flight_date').val().toString();
+    const $passengers = parseInt($('#flight_passengers').val());
 
-        var FlightRequest = {
-          'request': {
-            'slice': [
-              {
-                'origin': $origin,
-                'destination': $destination,
-                'date': $date
-              }
-            ],
-            'passengers': {
-              'adultCount': $passengers
-            },
-            'solutions': 10,
-            'refundable': false
-        }
-      };
-
-      console.log(FlightRequest);
-
-        $.ajax({
-          type: 'POST',
-         //Set up your request URL and API Key.
-          url: 'https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyBeNMXTnV9y9muXtJCm-5BlC5sG1YRsVA0',
-          contentType: 'application/json', // Set Content-type: application/json
-          dataType: 'json',
-         // The query we want from Google QPX, This will be the variable we created in the beginning
-          data: JSON.stringify(FlightRequest),
-          success: function (data) {
-          //Once we get the result you can either send it to console or use it anywhere you like.
-            // console.log(JSON.stringify(data.trips.data.airport[0].name));
-            console.log(JSON.stringify(data));
-          },
-          error: function(){
-           //Error Handling for our request
-            alert('Access to Google QPX Failed.');
+    var FlightRequest = {
+      'request': {
+        'slice': [
+          {
+            'origin': $origin,
+            'destination': $destination,
+            'date': $date
           }
-        });
-      });
+        ],
+        'passengers': {
+          'adultCount': $passengers
+        },
+        'solutions': 10,
+        'refundable': false
+      }
     };
 
+    console.log(FlightRequest);
+
+    $.ajax({
+      type: 'POST',
+      //Set up your request URL and API Key.
+      url: 'https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyBeNMXTnV9y9muXtJCm-5BlC5sG1YRsVA0',
+      contentType: 'application/json', // Set Content-type: application/json
+      dataType: 'json',
+      // The query we want from Google QPX, This will be the variable we created in the beginning
+      data: JSON.stringify(FlightRequest),
+      success: function (data) {
+        //Once we get the result you can either send it to console or use it anywhere you like.
+        // console.log(JSON.stringify(data.trips.data.airport[0].name));
+        console.log(JSON.stringify(data));
+        googleMap.displayFlights(data);
+      },
+      error: function(){
+        //Error Handling for our request
+        alert('Access to Google QPX Failed.');
+      }
+    });
+  });
+};
+
+googleMap.displayFlights = function(data) {
+  $('.modal-content').html(`
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Flights</h4>
+    </div>
+    <div class="modal-body">
+    <p>${data.trips.data.airport[0].name}</p>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>`);
+  $('.modal').modal('show');
+};
 
     //   $.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data) {
     //     console.log(data);
@@ -262,4 +273,4 @@ googleMap.openFlightModal = function() {
     // }
 
 
-    $(googleMap.mapSetup.bind(googleMap));
+$(googleMap.mapSetup.bind(googleMap));
