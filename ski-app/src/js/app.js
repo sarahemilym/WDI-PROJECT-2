@@ -124,9 +124,46 @@ googleMap.addForecast = function(resort) {
 googleMap.findFlights = function() {
   $('#map-canvas').on('click', '#flights', (e) => {
   if (e) e.preventDefault();
-});
-};
+  var FlightRequest = {
+      'request': {
+        'slice': [
+          {
+            'origin': 'DCA',
+            'destination': 'LAX',
+            'date': '2017-02-11'
+          }
+        ],
+        'passengers': {
+          'adultCount': 1,
+          'infantInLapCount': 0,
+          'infantInSeatCount': 0,
+          'childCount': 0,
+          'seniorCount': 0
+        },
+        'solutions': 20,
+        'refundable': false
+      }
+    };
 
+    $.ajax({
+      type: 'POST',
+     //Set up your request URL and API Key.
+      url: 'https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyBeNMXTnV9y9muXtJCm-5BlC5sG1YRsVA0',
+      contentType: 'application/json', // Set Content-type: application/json
+      dataType: 'json',
+     // The query we want from Google QPX, This will be the variable we created in the beginning
+      data: JSON.stringify(FlightRequest),
+      success: function (data) {
+      //Once we get the result you can either send it to console or use it anywhere you like.
+        console.log(JSON.stringify(data));
+      },
+      error: function(){
+       //Error Handling for our request
+        alert('Access to Google QPX Failed.');
+      }
+    });
+  });
+};
 
 //   $.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data) {
 //     console.log(data);
