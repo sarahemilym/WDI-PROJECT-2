@@ -75,26 +75,66 @@ googleMap.createMarkerForResort = function(resort) {
 
 googleMap.addInWindowForResort = function(resort, marker) {
   google.maps.event.addListener(marker, 'click', () => {
-    if (typeof googleMap.infoWindow !== 'undefined') googleMap.infoWindow.close();
-    console.log(typeof googleMap.infoWindow); //does't know what this.infoWindow is gets undefined even when open
-    this.infoWindow = new google.maps.InfoWindow({
-      content: `<p>${resort.name}</p><p>${resort.region}</p><input type="button" id="forecast" onclick="googleMap.addForecast(resort)"/>`
+    console.log('clicked', 'lat' + resort.lat, 'lng' + resort.lng);
+    $.get(`http://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data){
+      console.log(data);
+      if (typeof googleMap.infoWindow !== 'undefined') googleMap.infoWindow.close();
+      console.log(typeof googleMap.infoWindow); //does't know what this.infoWindow is gets undefined even when open
+      this.infoWindow = new google.maps.InfoWindow({
+        content: `<p>${resort.name}</p><p>${resort.region}</p><p>Temperature is ${data.main.temp} ℃</p><p>Min temperature is ${data.main.temp_min} ℃</p><p>Max temperature is ${data.main.temp} ℃</p><p>Weather is ${data.weather[0].description}</p><p>Wind Speed is ${data.wind.speed}</p><img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="icon"><input type="button" id="forecast"/><a href="#" id="flights">Find flights</a>`
+      });
+      googleMap.addForecast(resort);
+      googleMap.findFlights();
+      this.infoWindow.open(this.map, marker);
+      googleMap.map.setCenter(marker.getPosition());
+      googleMap.map.setZoom(5);
     });
-    this.infoWindow.open(this.map, marker);
-    googleMap.map.setCenter(marker.getPosition());
-    googleMap.map.setZoom(5);
-});
+  });
 };
 
 googleMap.addForecast = function(resort) {
-  console.log('clicked');
-  $.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data) {
-    console.log(data);
-  });
+  $('#map-canvas').on('click', '#forecast', () => {
+    $.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data) {
+        console.log(data.list[15].dt_txt);
+            $('.modal-content').html(`
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Forecast</h4>
+              </div>
+              <div class="modal-body">
+                <p>${data.list[7].dt_txt}</p>
+                <p>Average Temperature: ${data.list[7].main.temp} ℃</p>
+                <p>Min Temperature: ${data.list[7].main.temp_min} ℃</p>
+                <p>Max Temperature: ${data.list[7].main.temp_max} ℃</p>
+                <p>Weather Main: ${data.list[7].weather[0].main}</p>
+                <p>Weather Description: ${data.list[7].weather[0].description}</p>
+                <p>Wind Speed: ${data.list[7].wind.speed} meters per second</p>
+                <img src="http://openweathermap.org/img/w/${data.list[7].weather[0].icon}.png" alt="icon">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>`);
+        $('.modal').modal('show');
+      });
+      });
+  // });
 };
+
+googleMap.findFlights = function() {
+  $('#map-canvas').on('click', '#flights', (e) => {
+  if (e) e.preventDefault();
+});
+};
+
+
+//   $.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data) {
+//     console.log(data);
+//   });
+// };
 //     $('.modal-content').html(`
-//       <div class="modal-header">
-//         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+//       <div class='modal-header'>
+//         <button type='button' class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 //         <h4 class="modal-title">Forecast</h4>
 //       </div>
 //       <div class="modal-body">
