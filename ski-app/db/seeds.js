@@ -13,10 +13,11 @@ rp('https://skimap.org/SkiAreas/index.json')
     console.log(`${json.length} FOUND`);
     json.forEach((result, i) => {
       try {
-        console.log(`${i+1}. Creating ${result.SkiArea.name}`);
+        console.log(`${i+1}. Creating ${result.SkiArea.name}, country ${result.Region[0].RegionsSkiArea.temp_country}`);
         Resort.create({
           name: result.SkiArea.name,
           region: result.Region[0].name,
+          country: result.Region[0].RegionsSkiArea.temp_country,
           lat: result.SkiArea.geo_lat,
           lng: result.SkiArea.geo_lng
         });

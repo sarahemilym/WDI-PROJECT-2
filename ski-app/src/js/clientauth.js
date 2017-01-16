@@ -3,10 +3,11 @@ const Auth = Auth || {};
 Auth.init = function(){
   this.apiUrl = 'http://localhost:3000/api';
   this.$main  = $('main');
+  console.log(Auth.currentUser);
   $('.register').on('click', this.register.bind(this));
   $('.login').on('click', this.login.bind(this));
   $('.logout').on('click', this.logout.bind(this));
-  // $('.usersShow').on('click', this.usersShow.bind(this));
+  $('.usersShow').on('click', this.usersShow.bind(this));
   this.$main.on('submit', 'form', this.handleForm);
 
   if (this.getToken()){
@@ -60,49 +61,11 @@ Auth.register = function(e){
     </form>`);
 
     $('.modal').modal('show');
-    // this.$main.html(`
-    //   <h2>Register</h2>
-    //   <form method="post" action="/register">
-    //   <div class="form-group">
-    //   <input class="form-control" type="text" name="user[username]" placeholder="Username">
-    //   </div>
-    //   <div class="form-group">
-    //   <input class="form-control" type="email" name="user[email]" placeholder="Email">
-    //   </div>
-    //   <div class="form-group">
-    //   <input class="form-control" type="password" name="user[password]" placeholder="Password">
-    //   </div>
-    //   <div class="form-group">
-    //   <input class="form-control" type="password" name="user[passwordConfirmation]" placeholder="Password Confirmation">
-    //   </div>
-    //   <input class="btn btn-primary" type="submit" value="Register">
-    //   </form>
-    //   `);
   };
 
   Auth.login = function(e) {
     if (e) e.preventDefault();
-    // $('.modal-content').html(`
-    // <form method="post" action="/login">
-    //   <div class="modal-header">
-    //     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    //     <h4 class="modal-title">Login</h4>
-    //   </div>
-    //   <div class="modal-body">
-    //     <div class="form-group">
-    //       <label for="user_email">Email</label>
-    //       <input class="form-control" type="email" name="user[email]" id="user_email" placeholder="Email">
-    //     </div>
-    //     <div class="form-group">
-    //       <label for="user_password">Password</label>
-    //       <input class="form-control" type="password" name="user[password]" id="user_password" placeholder="Password">
-    //     </div>
-    //   </div>
-    //   <div class="modal-footer">
-    //     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    //     <button type="submit" class="btn btn-primary" value="Login">Login</button>
-    //   </div>
-    // </form>
+
     this.$main.html(`
       <h2 class="loggedOut">Login</h2>
       <form method="post" action="/login" class="loggedOut">
@@ -115,7 +78,6 @@ Auth.register = function(e){
       <input class="btn btn-primary" type="submit" value="Login">
       </form>
       `);
-      // $('.modal').modal('show');
     };
 
     Auth.logout = function(e){
@@ -123,43 +85,7 @@ Auth.register = function(e){
       this.removeToken();
       this.loggedOutState();
     };
-    //
-    // Auth.usersShow = function(e){
-    //   if (e) e.preventDefault();
-    //   // const userId = Auth:user();
-    //   $.get(`${this.apiUrl}/users/:id`).done(function(){
-    //     console.log('clicked');
-    //   });
-    // }
 
-
-
-
-    // App.usersIndex = function(e) {
-    //   if (e) e.preventDefault();
-    //   const url = `${this.apiUrl}/users`;
-    //
-    //   return this.ajaxRequest(url, 'get', null, data => {
-    //     this.$main.html(`
-    //       <div class="card-deck-wrapper">
-    //       <div class="card-deck">
-    //       </div>
-    //       </div>
-    //       `);
-    //       const $container = this.$main.find('.card-deck');
-    //       $.each(data.users, (i, user) => {
-    //         $container.append(`
-    //           <div class="card col-md-4">
-    //           <img class="card-img-top" src="http://fillmurray.com/300/300" alt="Card image cap">
-    //           <div class="card-block">
-    //           <h4 class="card-title">${user.username}</h4>
-    //           <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-    //           <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-    //           </div>
-    //           </div>`);
-    //         });
-    //       });
-    //     };
 
         Auth.handleForm = function(e){
           if (e) e.preventDefault();
@@ -168,13 +94,35 @@ Auth.register = function(e){
           const method = $(this).attr('method');
           const data   = $(this).serialize();
 
-          // return Auth.ajaxRequest(url, method, data, data => {
           return Auth.ajaxRequest(url, method, data, data => {
             if (data.token) Auth.setToken(data.token);
+            Auth.currentUser = data.user;
             Auth.loggedInState();
           });
         };
 
+        Auth.usersShow = function(e){
+          if (e) e.preventDefault();
+
+          $.ajax({
+            method: 'GET',
+            url: `${Auth.apiUrl}/users/${Auth.currentUser._id}`,
+            beforeSend: this.setRequestHeader.bind(this)
+          }).done(user => {
+            $('main').html(`
+              <div class="user">
+                <div class="user-tile">
+                  <h2 id="username">${Auth.currentUser.username}</h2>
+                  <p>${Auth.currentUser.email}</p>
+                  <ul class="list-inline">
+                    <li><a href="#" class="usersEdit" data-id="${user._id}">Edit</a></li>
+                    <li><a data-id="${user._id}" class="usersDelete" href="#">Delete</a></li>
+                  </ul>
+                </div>
+              </div>`
+            );
+          });
+        };
 
         Auth.ajaxRequest = function(url, method, data, callback){
           return $.ajax({
