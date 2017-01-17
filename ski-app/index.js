@@ -50,4 +50,15 @@ app.get('/api/resorts', (req, res) => {
   });
 });
 
+app.get('/api/skimaps', (req, res) => {
+  return rp('https://skimap.org/SkiMaps/view/345.xml')
+  .then(htmlString => {
+    const json = JSON.parse(htmlString);
+    return res.status(200).json(json);
+  })
+  .catch(err => {
+    return res.status(500).json(err);
+  });
+});
+
 app.listen(config.port, () => console.log(`Express started on port: ${config.port}`));

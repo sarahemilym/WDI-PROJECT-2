@@ -165,11 +165,22 @@ googleMap.addInWindowForResort = function(resort, marker) {
         content: `<p>${resort.name}</p><p>${resort.region}</p><p>${resort.country}</p><p>Temperature is ${data.main.temp} ℃</p><p>Min temperature is ${data.main.temp_min} ℃</p><p>Max temperature is ${data.main.temp} ℃</p><p>Weather is ${data.weather[0].description}</p><p>Wind Speed is ${data.wind.speed}</p><img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="icon"><input type="button" id="forecast"/><a href="#" id="flights">Find flights</a>`
       });
       googleMap.addForecast(resort);
+      googleMap.addMaps();
       this.infoWindow.open(this.map, marker);
       googleMap.map.setCenter(marker.getPosition());
       googleMap.map.setZoom(5);
     });
   });
+};
+
+googleMap.addMaps = function() {
+  $('#map-canvas').on('click', '#flights', (e) => {
+    if (e) e.preventDefault();
+    console.log('clicked');
+    $.get('http://localhost:3000/api/skimaps').done(data => {
+      console.log(data);
+  });
+});
 };
 
 googleMap.addForecast = function(resort) {
