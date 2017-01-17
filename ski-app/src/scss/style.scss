@@ -2,6 +2,13 @@ body {
   margin: 0;
 }
 
+.dropdown {
+  height: 60px;
+  max-height: 60px;
+  overflow-y: scroll;
+  }
+}
+
 #map-canvas {
   width: 80%;
   height: 80vh;
@@ -21,14 +28,17 @@ input#flight_destination.form-control {
   width: 60px;
   height: 28px;
 }
+
 input#flight_date.form-control {
   width: 60px;
   height: 28px;
 }
+
 input#flight_passengers.form-control {
   width: 60px;
   height: 28px;
 }
+
 input#flight_origin.form-control {
   width: 60px;
   height: 28px;
@@ -43,26 +53,34 @@ button#search.btn.btn-primary.flightForm {
   height: 28px;
 }
 
-.modal-title {
+.modal-header {
   text-align: center;
 }
+//
+// .modal-title {
+//   text-align: center;
+// }
+
 div.modal-content {
   width: 615px;
 }
 
 
-  h3 {
-    text-align: center;
-  }
+h3 {
+  text-align: center;
+}
+img {
+  height: 103px;
+  width: 124px;
+  margin-top: -15px;
+}
+h5 {
+  font-size: 24px;
 }
 
-
-  img {
-        height: 83px;
-  }
-  h5 {
-      font-size: 24px;
-    }
+.weather-infoWindow {
+  text-align: center;
+  height: 375px;
 }
 
 .temp-icon {
@@ -77,38 +95,35 @@ div.modal-content {
   }
 }
 
-.weather-tomorrow {
-      border: 1px solid #000;
-      overflow: hidden;
-      height: 236px;
-      margin: 18px;
-      padding: 146p;
-      width: 156px;
-      border-radius: 10px;
+div.weather-tomorrow, div.weather-container {
+  // border: 1px solid #000;
+  overflow: hidden;
+  height: 236px;
+  margin: 18px;
+  padding: 146p;
+  width: 156px;
+  border-radius: 10px;
 }
 
 
-  h6 {
-    font-size: 20px;
-    display: inline;
-    font-size: 14px;
-font-weight: 700;
-padding: 10px;
-  }
-
-  p {
-    display: inline;
-        padding: 6px;
-        font-weight: 700;
-        font-size: 12px;
-        margin: 9px;
-  }
+h6 {
+  font-size: 20px;
+  display: inline;
+  font-size: 14px;
+  font-weight: 700;
 }
+
+p {
+  display: inline;
+  font-weight: 700;
+  font-size: 12px;
+}
+
 
 .weather-description p {
   clear: both;
-display: inline;
-font-size: 20px;
+  display: inline;
+  font-size: 20px;
 
 }
 
@@ -155,12 +170,12 @@ a#forecast {
   }
 }
 
-.forecast-weather {
-  width: 121px;
-  height: 147px;
+div.forecast-weather, div.current-weather {
+  width: 151px;
+  height: 176px;
   margin: 14px auto;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 10px 10px 0px 0px;
   border: 1px solid black;
   text-align: center;
 
@@ -174,25 +189,26 @@ a#forecast {
   }
 }
 
-.forecast-minmax {
+div.forecast-minmax, div.minmax-temp {
   border: 1px solid black;
-  width: 121px;
+  width: 151px;
   height: 46px;
   margin: 10px auto;
-  border-radius: 10px;
-
+  margin-top: -15px;
+  border-radius: 0px 0px 10px 10px;
+  text-align: center;
+  // border-radius: 10px;
 
   h6 {
     display: inline;
     padding: 8px;
     font-weight: bold;
     font-size: 10px;
-    margin: 10px;
   }
 
   p {
     display: inline;
     font-weight: 700;
-    padding: 12px;
+    padding: 11px;
   }
 }

@@ -291,17 +291,18 @@ googleMap.addInWindowForResort = function(resort, marker) {
       // console.log(data);
       // console.log(typeof googleMap.infoWindow, 'infowindow');
       googleMap.infoWindow = new google.maps.InfoWindow({
-        content: `<div class="weather-infoWindow"><h3>${resort.name}</h3>
+        content: `<div class="weather-infoWindow"><h4>${resort.name}</h4><h4 class="modal-title">Current Weather</h4>
         <div class="weather-container">
         <div class="current-weather">
         <img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="icon">
-        <h5>${currentMain} ℃</h5>
-        <p>${data.weather[0].description}</p>
+        <p>${currentMain} ℃</p>
+        <br>
+        <h6>${data.weather[0].description}</h6>
           </div>
         <div class="minmax-temp">
-        <p>Min</p><p>Max</p>
+        <h6>Min</h6><h6>Max</h6>
         <br>
-        <h6>${currentMin} ℃</h6><h6>${currentMax} ℃</h6>
+        <p>${currentMin} ℃</p><p>${currentMax} ℃</p>
         </div>
         </div>
         <button class="btn btn-primary" id="forecast">Forecast</button>
@@ -351,6 +352,7 @@ googleMap.addForecast = function(resort) {
       $('.modal-content').html(`
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4>${resort.name}</h4>
         <h4 class="modal-title">3 Day Forecast</h4>
         </div>
         <div class="modal-body">
@@ -360,6 +362,7 @@ googleMap.addForecast = function(resort) {
         <div class="forecast-weather">
         <img src="http://openweathermap.org/img/w/${data.list[7].weather[0].icon}.png" alt="icon">
         <p>${mainTemp} ℃</p>
+        <br>
         <h6>${data.list[7].weather[0].description}</h6>
         </div>
         <div class="forecast-minmax"><h6>Min</h6><h6>Max</h6>
@@ -371,11 +374,12 @@ googleMap.addForecast = function(resort) {
         </div>
 
         <div class="col-2">
-        <h4><p>${date}</p></h4>
+        <h4>${date}</h4>
         <div class="weather-tomorrow">
         <div class="forecast-weather">
         <img src="http://openweathermap.org/img/w/${data.list[15].weather[0].icon}.png" alt="icon">
         <p>${mainTemp2} ℃</p>
+        <br>
         <h6>${data.list[15].weather[0].description}</h6>
         </div>
         <div class="forecast-minmax"><h6>Min</h6><h6>Max</h6>
@@ -387,11 +391,12 @@ googleMap.addForecast = function(resort) {
         </div>
 
         <div class="col-3">
-        <h4><p>${date2}</p></h4>
+        <h4>${date2}</h4>
         <div class="weather-tomorrow">
         <div class="forecast-weather">
         <img src="http://openweathermap.org/img/w/${data.list[23].weather[0].icon}.png" alt="icon">
         <p>${mainTemp3} ℃</p>
+        <br>
         <h6>${data.list[23].weather[0].description}</h6>
         </div>
         <div class="forecast-minmax"><h6>Min</h6><h6>Max</h6>
