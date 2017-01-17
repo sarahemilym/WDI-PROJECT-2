@@ -4,7 +4,6 @@ const google = google;
 var markers = [];
 
 googleMap.mapSetup = function() {
-
   const canvas = document.getElementById('map-canvas');
 
   const mapOptions = {
@@ -14,6 +13,7 @@ googleMap.mapSetup = function() {
   };
 
   this.map = new google.maps.Map(canvas, mapOptions);
+  googleMap.openFlightModal();
   this.getCountries();
   this.getResorts();
 };
@@ -165,7 +165,6 @@ googleMap.addInWindowForResort = function(resort, marker) {
         content: `<p>${resort.name}</p><p>${resort.region}</p><p>${resort.country}</p><p>Temperature is ${data.main.temp} ℃</p><p>Min temperature is ${data.main.temp_min} ℃</p><p>Max temperature is ${data.main.temp} ℃</p><p>Weather is ${data.weather[0].description}</p><p>Wind Speed is ${data.wind.speed}</p><img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="icon"><input type="button" id="forecast"/><a href="#" id="flights">Find flights</a>`
       });
       googleMap.addForecast(resort);
-      googleMap.openFlightModal();
       this.infoWindow.open(this.map, marker);
       googleMap.map.setCenter(marker.getPosition());
       googleMap.map.setZoom(5);
@@ -203,44 +202,90 @@ googleMap.addForecast = function(resort) {
 
 
 googleMap.openFlightModal = function() {
-  $('#map-canvas').on('click', '#flights', (e) => {
+  $('nav').on('click', '.flights', (e) => {
     if (e) e.preventDefault();
-    $('.modal-content').html(`
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Choose Flights</h4>
-        </div>
-        <div class="modal-body">
-        <div class="form-group">
-        <label for="flight_origin">Origin</label>
-        <input class="form-control" type="text" id="flight_origin" placeholder="Origin">
-        </div>
-        <div class="form-group">
-        <label for="flight_destination">Destination</label>
-        <input class="form-control" type="text" id="flight_destination" placeholder="Destination">
-        </div>
-        <div class="form-group">
-        <label for="fligh_date">Travel Date</label>
-        <input class="form-control" type="date" id="flight_date" placeholder="Travel Date yyyy-mm-dd">
-        </div>
-        <div class="form-group">
-        <label for="flight_passengers">Number of Passengers</label>
-        <input class="form-control" type="number" id="flight_passengers" placeholder="Number of passengers">
-        </div>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" id="search">Search</button>
-        </div>
-        </form>`);
+    $('main').html(`
+      <h2 class="loggedIn flightForm">Find Flights</h2>
+      <div class="form-group flightForm">
+      <label for="flight_origin">Origin</label>
+      <input class="form-control" type="text" id="flight_origin" placeholder="Origin">
+      </div>
+      <div class="form-group flightForm">
+      <label for="flight_destination">Destination</label>
+      <input class="form-control" type="text" id="flight_destination" placeholder="Destination">
+      </div>
+      <div class="form-group flightForm">
+      <label for="fligh_date">Travel Date</label>
+      <input class="form-control" type="date" id="flight_date" placeholder="Travel Date yyyy-mm-dd">
+      </div>
+      <div class="form-group flightForm">
+      <label for="flight_passengers">Number of Passengers</label>
+      <input class="form-control" type="number" id="flight_passengers" placeholder="Number of passengers">
+      </div>
+      <div id="checkbox flightForm">
+      <label for="cb1">Nonstop?</label>
+    <input type="checkbox" id="cb" onclick="googleMap.checkbox()" />
+    </div>
+      <div class="form-footer flightForm">
+      <button type="button" class="btn btn-default flightForm" data-dismiss="modal" id="close">Close</button>
+      <button type="submit" class="btn btn-primary flightForm" id="search">Search</button>
+      </div>
+      </form>`);
+  // };
 
-    $('.modal').modal('show');
+  // <div class="form-group flightForm">
+  // <label for="flight_stops">Number of Stops</label>
+  // <input class="form-control" type="number" id="flight_stops" placeholder="Number of stops">
+  // </div>
+
+
+    // $('.modal-content').html(`
+    //     <div class="modal-header">
+    //     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    //     <h4 class="modal-title">Choose Flights</h4>
+    //     </div>
+    //     <div class="modal-body">
+        // <div class="form-group">
+        // <label for="flight_origin">Origin</label>
+        // <input class="form-control" type="text" id="flight_origin" placeholder="Origin">
+        // </div>
+        // <div class="form-group">
+        // <label for="flight_destination">Destination</label>
+        // <input class="form-control" type="text" id="flight_destination" placeholder="Destination">
+        // </div>
+        // <div class="form-group">
+        // <label for="fligh_date">Travel Date</label>
+        // <input class="form-control" type="date" id="flight_date" placeholder="Travel Date yyyy-mm-dd">
+        // </div>
+        // <div class="form-group">
+        // <label for="flight_passengers">Number of Passengers</label>
+        // <input class="form-control" type="number" id="flight_passengers" placeholder="Number of passengers">
+        // </div>
+    //     </div>
+        // <div class="modal-footer">
+        // <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        // <button type="submit" class="btn btn-primary" id="search">Search</button>
+        // </div>
+    //     </form>`);
+    //
+    // $('.modal').modal('show');
   });
   googleMap.findFlights();
 };
 
+googleMap.checkbox = function() {
+  console.log('clicked');
+  if ($('#cb').is(':checked')) {
+    console.log('checked');
+    $('#cb').val(0);
+  }
+  console.log($('#cb').val());
+};
+
 googleMap.findFlights = function() {
-  $('.modal').on('click', '#search', (e) => {
+  $('main').on('click', '#close', googleMap.hideFlightForm);
+  $('main').on('click', '#search', (e) => {
+    googleMap.hideFlightForm();
     console.log('clicked');
     if (e) e.preventDefault();
 
@@ -248,6 +293,7 @@ googleMap.findFlights = function() {
     const $destination = $('#flight_destination').val().toString();
     const $date = $('#flight_date').val().toString();
     const $passengers = parseInt($('#flight_passengers').val());
+    const $stops = parseInt($('#cb').val());
 
     var FlightRequest = {
       'request': {
@@ -255,7 +301,8 @@ googleMap.findFlights = function() {
           {
             'origin': $origin,
             'destination': $destination,
-            'date': $date
+            'date': $date,
+            'maxStops': $stops
           }
         ],
         'passengers': {
@@ -300,7 +347,7 @@ googleMap.displayFlights = function(data) {
     <p>Origin, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].origin}</p>
     <p>Destination, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].destination}</p>
     <p>Flight Time, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].duration}</p>
-    <p>Flight Time, ${data.trips.tripOption[0].slice[0].segment[0].connectionDuration}</p>
+
     <br>
     <p>Sale Total, ${data.trips.tripOption[1].saleTotal}</p>
     <p>Total Duration, ${data.trips.tripOption[1].slice[0].segment[0].duration}</p>
@@ -310,7 +357,7 @@ googleMap.displayFlights = function(data) {
     <p>Origin, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].origin}</p>
     <p>Destination, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].destination}</p>
     <p>Flight Time, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].duration}</p>
-    <p>Flight Time, ${data.trips.tripOption[1].slice[0].segment[0].connectionDuration}</p>
+
     <br>
     <p>Sale Total, ${data.trips.tripOption[2].saleTotal}</p>
     <p>Total Duration, ${data.trips.tripOption[2].slice[0].segment[0].duration}</p>
@@ -320,7 +367,6 @@ googleMap.displayFlights = function(data) {
     <p>Origin, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].origin}</p>
     <p>Destination, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].destination}</p>
     <p>Flight Time, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].duration}</p>
-    <p>Flight Time, ${data.trips.tripOption[2].slice[0].segment[0].connectionDuration}</p>
 
     </div>
     <div class="modal-footer">
@@ -329,5 +375,9 @@ googleMap.displayFlights = function(data) {
   $('.modal').modal('show');
 };
 
+googleMap.hideFlightForm = function(e) {
+  if (e) e.preventDefault();
+  $('.flightForm').hide();
+};
 
 $(googleMap.mapSetup.bind(googleMap));
