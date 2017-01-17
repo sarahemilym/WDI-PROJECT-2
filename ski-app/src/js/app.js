@@ -291,20 +291,20 @@ googleMap.addInWindowForResort = function(resort, marker) {
       // console.log(data);
       // console.log(typeof googleMap.infoWindow, 'infowindow');
       googleMap.infoWindow = new google.maps.InfoWindow({
-        content: `<div class="weather-container"><h3>${resort.name}</h3>
+        content: `<div class="weather-infoWindow"><h3>${resort.name}</h3>
+        <div class="weather-container">
         <div class="current-weather">
         <img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="icon">
         <h5>${currentMain} ℃</h5>
+        <p>${data.weather[0].description}</p>
           </div>
         <div class="minmax-temp">
         <p>Min</p><p>Max</p>
         <br>
         <h6>${currentMin} ℃</h6><h6>${currentMax} ℃</h6>
         </div>
-        <div class="weather-description">
-        <p>${data.weather[0].description}</p>
         </div>
-        <a href="#" id="forecast">3 Day Forecast</a>
+        <button class="btn btn-primary" id="forecast">Forecast</button>
         </div>
         </div>`
       });
