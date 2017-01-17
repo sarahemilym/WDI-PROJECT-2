@@ -6,6 +6,10 @@
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJD1ji6i-ejX7SDWGIHH_lYzQrNVsiomc" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
+<script>
+  moment().format();
+</script>
   <script src="js/clientauth.js" charset="utf-8"></script>
   <script src="js/app.js" charset="utf-8"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -16,35 +20,37 @@
 </head>
 <body>
   <header>
-  <nav class="navbar navbar-light bg-faded">
-  <div class="container">
-  <a class="navbar-brand" href="#">Ski App</a>
-  <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2" aria-controls="exCollapsingNavbar2" aria-expanded="false" aria-label="Toggle navigation">
-  &#9776;
-</button>
-<div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
-<ul class="nav navbar-nav">
-<!-- <li class="nav-item active">
-<a class="nav-link resortsIndex" href="#">Resorts <span class="sr-only">(current)</span></a>
-</li> -->
-<li class="nav-item">
-<a class="nav-link register loggedOut" href="#">Register</a>
-</li>
-<li class="nav-item">
-<a class="nav-link login loggedOut" href="#">Login</a>
-</li>
-<li class="nav-item active loggedIn">
-  <a class="nav-link usersShow" href="#">User Profile<span class="sr-only">(current)</span></a>
-</li>
-<li class="nav-item active loggedIn">
-  <a class="nav-link flights" href="#">Find Flights<span class="sr-only">(current)</span></a>
-</li>
-<li class="nav-item">
-<a class="nav-link logout loggedIn" href="#">Logout</a>
-</li>
-</ul>
-</div>
-</div>
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">SkiingApp</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a class="nav-link register loggedOut" href="#">Register</a></li>
+        <li><a class="nav-link login loggedOut" href="#">Login</a></li>
+        <li><a class="nav-link usersShow" href="#">User Profile</a></li>
+        <li><a class="nav-link flights" href="#">Find Flights</a></li>
+        <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Choose Region <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                  </ul>
+                </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a class="nav-link logout loggedIn" href="#">Logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>
 </header>
 <main class="container"></main>
@@ -54,14 +60,7 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Choose Region
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-      </ul>
-    </div>
+
 <div id="map-canvas" class="loggedIn"></div>
 </body>
 </html>

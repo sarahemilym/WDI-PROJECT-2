@@ -8,12 +8,131 @@ googleMap.mapSetup = function() {
 
   const mapOptions = {
     zoom: 2,
+    styles: [
+    {
+        "featureType": "administrative",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#444444"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape.man_made",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": [
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 45
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#90a8b3"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "color": "#fefefe"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "weight": "0.01"
+            },
+            {
+                "lightness": "24"
+            },
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#50707f"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "weight": "1"
+            }
+        ]
+    }
+],
     center: new google.maps.LatLng(51.490744,-0.140362),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
 
   this.map = new google.maps.Map(canvas, mapOptions);
-  googleMap.openFlightModal();
+  googleMap.openFlightForm();
   this.getCountries();
   this.getResorts();
 };
@@ -34,7 +153,7 @@ googleMap.getCountries = function() {
 
 
     // const countryCodes = {
-    //   "38" : "England"
+    //   '38' : 'England"
     // }
 const countryCodes = {
   '31': 'Canada',
@@ -127,10 +246,17 @@ googleMap.loopThroughResorts = function(data) {
 };
 
 googleMap.createMarkerForResort = function(resort) {
+  const icon = {
+    url: 'images/skiing.png',
+    scaledSize: new google.maps.Size(20, 20),
+    origin: new google.maps.Point(0,0),
+    anchor: new google.maps.Point(0, 0)
+};
   const latlng = new google.maps.LatLng(resort.lat, resort.lng);
   const marker = new google.maps.Marker({
     position: latlng,
     region: resort.region,
+    icon: icon,
     map: this.map
   });
   markers.push(marker);
@@ -156,53 +282,126 @@ googleMap.deleteMarkers = function() {
 
 googleMap.addInWindowForResort = function(resort, marker) {
   google.maps.event.addListener(marker, 'click', () => {
-    console.log('clicked', 'lat' + resort.lat, 'lng' + resort.lng);
+    if (typeof googleMap.infoWindow !== 'undefined') googleMap.infoWindow.close();
+    // console.log('clicked', 'lat' + resort.lat, 'lng' + resort.lng);
     $.get(`http://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data){
+      const currentMain = Math.round(data.main.temp);
+      const currentMin = Math.round(data.main.temp_min);
+      const currentMax = Math.round(data.main.temp_max);
       // console.log(data);
-      console.log(typeof googleMap.infoWindow, 'infowindow');
-      if (typeof googleMap.infoWindow !== 'undefined') googleMap.infoWindow.close();
-      this.infoWindow = new google.maps.InfoWindow({
-        content: `<p>${resort.name}</p><p>${resort.region}</p><p>${resort.country}</p><p>Temperature is ${data.main.temp} ℃</p><p>Min temperature is ${data.main.temp_min} ℃</p><p>Max temperature is ${data.main.temp} ℃</p><p>Weather is ${data.weather[0].description}</p><p>Wind Speed is ${data.wind.speed}</p><img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="icon"><input type="button" id="forecast"/><a href="#" id="flights">Find flights</a>`
+      // console.log(typeof googleMap.infoWindow, 'infowindow');
+      googleMap.infoWindow = new google.maps.InfoWindow({
+        content: `<div class="weather-container"><h3>${resort.name}</h3>
+        <div class="current-weather">
+        <img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="icon">
+        <h5>${currentMain} ℃</h5>
+          </div>
+        <div class="minmax-temp">
+        <p>Min</p><p>Max</p>
+        <br>
+        <h6>${currentMin} ℃</h6><h6>${currentMax} ℃</h6>
+        </div>
+        <div class="weather-description">
+        <p>${data.weather[0].description}</p>
+        </div>
+        <a href="#" id="forecast">3 Day Forecast</a>
+        </div>
+        </div>`
       });
       googleMap.addForecast(resort);
       googleMap.addMaps();
-      this.infoWindow.open(this.map, marker);
+      googleMap.infoWindow.open(this.map, marker);
       googleMap.map.setCenter(marker.getPosition());
       googleMap.map.setZoom(5);
     });
   });
 };
 
+//      <input type="button" id="forecast">3 Day Forecast</input>
 googleMap.addMaps = function() {
   $('#map-canvas').on('click', '#flights', (e) => {
     if (e) e.preventDefault();
     console.log('clicked');
     $.get('http://localhost:3000/api/skimaps').done(data => {
       console.log(data);
+    });
   });
-});
 };
 
 googleMap.addForecast = function(resort) {
-  $('#map-canvas').on('click', '#forecast', () => {
+  $('#map-canvas').on('click', '#forecast', (e) => {
+    if (e) e.preventDefault();
     $.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data) {
+
+      const mainTemp = Math.round(data.list[7].main.temp);
+      const minTemp  = Math.round(data.list[7].main.temp_min);
+      const maxTemp  = Math.round(data.list[7].main.temp_max);
+
+      const mainTemp2 = Math.round(data.list[15].main.temp);
+      const minTemp2  = Math.round(data.list[15].main.temp_min);
+      const maxTemp2  = Math.round(data.list[15].main.temp_max);
+
+      const mainTemp3 = Math.round(data.list[23].main.temp);
+      const minTemp3  = Math.round(data.list[23].main.temp_min);
+      const maxTemp3  = Math.round(data.list[23].main.temp_max);
+
+      const date = moment(`${data.list[15].dt_txt}`).format('ddd Do MMM');
+      const date2 = moment(`${data.list[23].dt_txt}`).format('ddd Do MMM');
 
       $('.modal-content').html(`
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Forecast</h4>
+        <h4 class="modal-title">3 Day Forecast</h4>
         </div>
         <div class="modal-body">
-        <p>${data.list[7].dt_txt}</p>
-        <p>Average Temperature: ${data.list[7].main.temp} ℃</p>
-        <p>Min Temperature: ${data.list[7].main.temp_min} ℃</p>
-        <p>Max Temperature: ${data.list[7].main.temp_max} ℃</p>
-        <p>Weather Main: ${data.list[7].weather[0].main}</p>
-        <p>Weather Description: ${data.list[7].weather[0].description}</p>
-        <p>Wind Speed: ${data.list[7].wind.speed} meters per second</p>
+        <div class="col-1">
+        <h4>Tomorrow</h4>
+        <div class="weather-tomorrow">
+        <div class="forecast-weather">
         <img src="http://openweathermap.org/img/w/${data.list[7].weather[0].icon}.png" alt="icon">
-
+        <p>${mainTemp} ℃</p>
+        <h6>${data.list[7].weather[0].description}</h6>
         </div>
+        <div class="forecast-minmax"><h6>Min</h6><h6>Max</h6>
+        <br>
+        <p>${minTemp} ℃</p><p>${maxTemp} ℃</p>
+        </div
+        </div>
+        </div>
+        </div>
+
+        <div class="col-2">
+        <h4><p>${date}</p></h4>
+        <div class="weather-tomorrow">
+        <div class="forecast-weather">
+        <img src="http://openweathermap.org/img/w/${data.list[15].weather[0].icon}.png" alt="icon">
+        <p>${mainTemp2} ℃</p>
+        <h6>${data.list[15].weather[0].description}</h6>
+        </div>
+        <div class="forecast-minmax"><h6>Min</h6><h6>Max</h6>
+        <br>
+        <p>${minTemp2} ℃</p><p>${maxTemp2} ℃</p>
+        </div
+        </div>
+        </div>
+        </div>
+
+        <div class="col-3">
+        <h4><p>${date2}</p></h4>
+        <div class="weather-tomorrow">
+        <div class="forecast-weather">
+        <img src="http://openweathermap.org/img/w/${data.list[23].weather[0].icon}.png" alt="icon">
+        <p>${mainTemp3} ℃</p>
+        <h6>${data.list[23].weather[0].description}</h6>
+        </div>
+        <div class="forecast-minmax"><h6>Min</h6><h6>Max</h6>
+        <br>
+        <p>${minTemp3} ℃</p><p>${maxTemp3} ℃</p>
+        </div
+        </div>
+        </div>
+        </div>
+
         <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>`);
@@ -212,74 +411,39 @@ googleMap.addForecast = function(resort) {
 };
 
 
-googleMap.openFlightModal = function() {
+googleMap.openFlightForm = function() {
   $('nav').on('click', '.flights', (e) => {
     if (e) e.preventDefault();
     $('main').html(`
-      <h2 class="loggedIn flightForm">Find Flights</h2>
-      <div class="form-group flightForm">
-      <label for="flight_origin">Origin</label>
-      <input class="form-control" type="text" id="flight_origin" placeholder="Origin">
-      </div>
-      <div class="form-group flightForm">
-      <label for="flight_destination">Destination</label>
-      <input class="form-control" type="text" id="flight_destination" placeholder="Destination">
-      </div>
-      <div class="form-group flightForm">
-      <label for="fligh_date">Travel Date</label>
-      <input class="form-control" type="date" id="flight_date" placeholder="Travel Date yyyy-mm-dd">
-      </div>
-      <div class="form-group flightForm">
-      <label for="flight_passengers">Number of Passengers</label>
-      <input class="form-control" type="number" id="flight_passengers" placeholder="Number of passengers">
-      </div>
-      <div id="checkbox flightForm">
-      <label for="cb1">Nonstop?</label>
-    <input type="checkbox" id="cb" onclick="googleMap.checkbox()" />
-    </div>
-      <div class="form-footer flightForm">
-      <button type="button" class="btn btn-default flightForm" data-dismiss="modal" id="close">Close</button>
-      <button type="submit" class="btn btn-primary flightForm" id="search">Search</button>
-      </div>
-      </form>`);
-  // };
-
-  // <div class="form-group flightForm">
-  // <label for="flight_stops">Number of Stops</label>
-  // <input class="form-control" type="number" id="flight_stops" placeholder="Number of stops">
-  // </div>
-
-
-    // $('.modal-content').html(`
-    //     <div class="modal-header">
-    //     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    //     <h4 class="modal-title">Choose Flights</h4>
-    //     </div>
-    //     <div class="modal-body">
-        // <div class="form-group">
-        // <label for="flight_origin">Origin</label>
-        // <input class="form-control" type="text" id="flight_origin" placeholder="Origin">
-        // </div>
-        // <div class="form-group">
-        // <label for="flight_destination">Destination</label>
-        // <input class="form-control" type="text" id="flight_destination" placeholder="Destination">
-        // </div>
-        // <div class="form-group">
-        // <label for="fligh_date">Travel Date</label>
-        // <input class="form-control" type="date" id="flight_date" placeholder="Travel Date yyyy-mm-dd">
-        // </div>
-        // <div class="form-group">
-        // <label for="flight_passengers">Number of Passengers</label>
-        // <input class="form-control" type="number" id="flight_passengers" placeholder="Number of passengers">
-        // </div>
-    //     </div>
-        // <div class="modal-footer">
-        // <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        // <button type="submit" class="btn btn-primary" id="search">Search</button>
-        // </div>
-    //     </form>`);
-    //
-    // $('.modal').modal('show');
+      <div class="flightForm">
+      <h2 class="loggedIn">Find Flights</h2>
+      <form class="form-inline">
+        <div class="form-group">
+        <label for="flight_origin">Flying from?</label>
+        <input class="form-control" type="text" id="flight_origin" placeholder="Origin">
+          </div>
+        <div class="form-group">
+        <label for="flight_destination">Flying to?</label>
+        <input class="form-control" type="text" id="flight_destination" placeholder="Destination">
+          </div>
+          <div class="form-group">
+          <label for="fligh_date">Travel Date</label>
+          <input class="form-control" type="date" id="flight_date" placeholder="Travel Date yyyy-mm-dd">
+          </div>
+          <div class="form-group">
+          <label for="flight_passengers">Number of Passengers</label>
+          <input class="form-control" type="number" id="flight_passengers" placeholder="Number of passengers">
+          </div>
+          <div id="checkbox">
+          <label for="cb1">Nonstop?</label>
+        <input type="checkbox" id="cb" onclick="googleMap.checkbox()" />
+        </div>
+        <div class="form-footer flight">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+        <button type="submit" class="btn btn-primary" id="search">Search</button>
+        </div>
+        </form>
+        </div>`);
   });
   googleMap.findFlights();
 };
@@ -289,6 +453,8 @@ googleMap.checkbox = function() {
   if ($('#cb').is(':checked')) {
     console.log('checked');
     $('#cb').val(0);
+  } else {
+      $('#cb').val('off');
   }
   console.log($('#cb').val());
 };
