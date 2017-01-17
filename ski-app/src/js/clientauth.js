@@ -153,6 +153,3 @@ Auth.removeToken = function() {
 
 
 $(Auth.init.bind(Auth));
-
-
-//this is a pimp map
