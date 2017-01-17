@@ -28,7 +28,7 @@ googleMap.getCountries = function() {
       }
     });
     googleMap.createDropdown(codes);
-    // console.log(codes);
+    console.log(codes);
   });
 };
 
@@ -36,20 +36,71 @@ googleMap.getCountries = function() {
     // const countryCodes = {
     //   "38" : "England"
     // }
+const countryCodes = {
+  '31': 'Canada',
+  '184': 'USA',
+  '10': 'Austria',
+  '60': 'France',
+  '183': 'UK',
+  '167': 'Switzerland',
+  '152': 'Serbia',
+  '35': 'Chile',
+  '125': 'New Zealand',
+  '76': 'India',
+  '78': 'Iran',
+  '160': 'South Africa',
+  '9': 'Australia',
+  '7': 'Argentina',
+  '36': 'China',
+  '8': 'Armenia',
+  '63': 'Georgia',
+  '81': 'Lebanon',
+  '86': 'Kazakhstan',
+  '90': 'South Korea',
+  '131': 'Pakistan',
+  '84': 'Japan',
+  '17': 'Belgium',
+  '4': 'Andorra',
+  '16': 'Belarus',
+  '22': 'Bosnia & Herzegovina',
+  '26': 'Bulgaria',
+  '43': 'Croatia',
+  '45': 'Cyprus',
+  '46': 'Czech Republic',
+  '56': 'Estonia',
+  '102': 'Macedonia',
+  '129': 'Norway',
+  '138': 'Poland',
+  '141': 'Romania',
+  '142': 'Russia',
+  '156': 'Slovakia',
+  '157': 'Slovenia',
+  '161': 'Spain',
+  '59': 'Finland',
+  '166': 'Sweden',
+  '177': 'Turkey',
+  '181': 'Ukraine',
+  '82': 'Italy',
+  '66': 'Greece',
+  '75': 'Iceland'
+};
+
 googleMap.createDropdown = function(codes) {
   $.each(codes, function(i, val) {
-    $('.dropdown-menu').append(`<li><a href="#" class="filter" value="${val}">${val}</a></li>`);
+    console.log('countryCodesVal', countryCodes[val]); // this changes it to the word
+    // console.log(`countryCodes${val}`) - this is the number
+    $('.dropdown-menu').append(`<li><a href="#" class="filter" value="${val}" id=${val}>${countryCodes[val]}</a></li>`);
   });
   $('.filter').on('click', googleMap.selectCountry);
 };
 
 googleMap.selectCountry = function(e) {
+  // console.log($(this).attr('value'), 'filter value');
   if (e) e.preventDefault();
-  var $country = parseInt(this.innerHTML);
+  var $country = parseInt($(this).attr('value'));
   console.log('country edit', typeof($country), $country);
   // googleMap.getResorts($country);
   console.log('clicked', this.innerHTML);
-  // var $country = this.value;
   googleMap.getResorts($country);
   // console.log($country);
 
@@ -210,7 +261,7 @@ googleMap.findFlights = function() {
         'passengers': {
           'adultCount': $passengers
         },
-        'solutions': 10,
+        'solutions': 3,
         'refundable': false
       }
     };
@@ -219,20 +270,15 @@ googleMap.findFlights = function() {
 
     $.ajax({
       type: 'POST',
-      //Set up your request URL and API Key.
       url: 'https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyBeNMXTnV9y9muXtJCm-5BlC5sG1YRsVA0',
       contentType: 'application/json', // Set Content-type: application/json
       dataType: 'json',
-      // The query we want from Google QPX, This will be the variable we created in the beginning
       data: JSON.stringify(FlightRequest),
       success: function (data) {
-        //Once we get the result you can either send it to console or use it anywhere you like.
-        // console.log(JSON.stringify(data.trips.data.airport[0].name));
         console.log(JSON.stringify(data));
         googleMap.displayFlights(data);
       },
       error: function(){
-        //Error Handling for our request
         alert('Access to Google QPX Failed.');
       }
     });
@@ -246,7 +292,36 @@ googleMap.displayFlights = function(data) {
     <h4 class="modal-title">Flights</h4>
     </div>
     <div class="modal-body">
-    <p>${data.trips.data.airport[0].name}</p>
+    <p>Sale Total, ${data.trips.tripOption[0].saleTotal}</p>
+    <p>Total Duration, ${data.trips.tripOption[0].slice[0].segment[0].duration}</p>
+    <p>Class, ${data.trips.tripOption[0].slice[0].segment[0].cabin}</p>
+    <p>Arrival Time, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].arrivalTime}</p>
+    <p>Departure Time, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].departureTime}</p>
+    <p>Origin, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].origin}</p>
+    <p>Destination, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].destination}</p>
+    <p>Flight Time, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].duration}</p>
+    <p>Flight Time, ${data.trips.tripOption[0].slice[0].segment[0].connectionDuration}</p>
+    <br>
+    <p>Sale Total, ${data.trips.tripOption[1].saleTotal}</p>
+    <p>Total Duration, ${data.trips.tripOption[1].slice[0].segment[0].duration}</p>
+    <p>Class, ${data.trips.tripOption[1].slice[0].segment[0].cabin}</p>
+    <p>Arrival Time, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].arrivalTime}</p>
+    <p>Departure Time, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].departureTime}</p>
+    <p>Origin, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].origin}</p>
+    <p>Destination, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].destination}</p>
+    <p>Flight Time, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].duration}</p>
+    <p>Flight Time, ${data.trips.tripOption[1].slice[0].segment[0].connectionDuration}</p>
+    <br>
+    <p>Sale Total, ${data.trips.tripOption[2].saleTotal}</p>
+    <p>Total Duration, ${data.trips.tripOption[2].slice[0].segment[0].duration}</p>
+    <p>Class, ${data.trips.tripOption[2].slice[0].segment[0].cabin}</p>
+    <p>Arrival Time, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].arrivalTime}</p>
+    <p>Departure Time, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].departureTime}</p>
+    <p>Origin, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].origin}</p>
+    <p>Destination, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].destination}</p>
+    <p>Flight Time, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].duration}</p>
+    <p>Flight Time, ${data.trips.tripOption[2].slice[0].segment[0].connectionDuration}</p>
+
     </div>
     <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
