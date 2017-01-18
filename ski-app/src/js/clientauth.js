@@ -74,8 +74,8 @@ Auth.register = function(e){
     </div>
     </div>
     <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary" value="Register">Register</button>
+    <button type="submit" class="btn btn-primary register" value="Register">Register</button>
+    <button type="button" class="btn btn-default close-register" data-dismiss="modal">Close</button>
     </div>
     </form>`);
 
