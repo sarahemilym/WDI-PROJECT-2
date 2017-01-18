@@ -127,7 +127,7 @@ googleMap.mapSetup = function() {
         ]
     }
 ],
-    center: new google.maps.LatLng(41.327819, -3.694850),
+    center: new google.maps.LatLng(46.166364, 24.974736),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
 
@@ -271,13 +271,13 @@ function setMapOnAll(map) {
 
 googleMap.clearMarkers = function() {
   setMapOnAll(null);
+  googleMap.map.setZoom(2);
+  googleMap.map.setCenter(google.maps.LatLng(46.166364, 24.974736));
 };
 
 googleMap.deleteMarkers = function() {
   googleMap.clearMarkers();
   markers = [];
-  googleMap.map.setZoom(2);
-  googleMap.map.setCenter(26.607066, 29.771936);
 };
 
 
