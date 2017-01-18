@@ -127,7 +127,7 @@ googleMap.mapSetup = function() {
         ]
     }
 ],
-    center: new google.maps.LatLng(51.490744,-0.140362),
+    center: new google.maps.LatLng(26.607066, 29.771936),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
 
@@ -276,7 +276,7 @@ googleMap.clearMarkers = function() {
 googleMap.deleteMarkers = function() {
   googleMap.clearMarkers();
   markers = [];
-  googleMap.map.setZoom(1);
+  googleMap.map.setZoom(2);
 };
 
 
@@ -518,37 +518,79 @@ googleMap.displayFlights = function(data) {
   $('.modal-content').html(`
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">Flights</h4>
+    <h4 class="modal-title">Flight Details</h4>
     </div>
     <div class="modal-body">
-    <p>Sale Total, ${data.trips.tripOption[0].saleTotal}</p>
-    <p>Total Duration, ${data.trips.tripOption[0].slice[0].segment[0].duration}</p>
-    <p>Class, ${data.trips.tripOption[0].slice[0].segment[0].cabin}</p>
-    <p>Arrival Time, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].arrivalTime}</p>
-    <p>Departure Time, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].departureTime}</p>
-    <p>Origin, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].origin}</p>
-    <p>Destination, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].destination}</p>
-    <p>Flight Time, ${data.trips.tripOption[0].slice[0].segment[0].leg[0].duration}</p>
 
-    <br>
-    <p>Sale Total, ${data.trips.tripOption[1].saleTotal}</p>
-    <p>Total Duration, ${data.trips.tripOption[1].slice[0].segment[0].duration}</p>
-    <p>Class, ${data.trips.tripOption[1].slice[0].segment[0].cabin}</p>
-    <p>Arrival Time, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].arrivalTime}</p>
-    <p>Departure Time, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].departureTime}</p>
-    <p>Origin, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].origin}</p>
-    <p>Destination, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].destination}</p>
-    <p>Flight Time, ${data.trips.tripOption[1].slice[0].segment[0].leg[0].duration}</p>
 
+    <div class="col-1">
+    <div class="trip">
+    <div class="journey">
+    <h5>Origin</h5><h5>Destination</h5>
+    <h6>${data.trips.tripOption[0].slice[0].segment[0].leg[0].origin}</h6><h6>${data.trips.tripOption[0].slice[0].segment[0].leg[0].destination}</h6>
+    </div>
+    <div class="class">
+    <p><span>Class:</span>${data.trips.tripOption[0].slice[0].segment[0].cabin}</p>
+    </div>
+    <div class="flight-time">
+    <p><span>Departure Time:</span> ${data.trips.tripOption[0].slice[0].segment[0].leg[0].departureTime}</p>
     <br>
-    <p>Sale Total, ${data.trips.tripOption[2].saleTotal}</p>
-    <p>Total Duration, ${data.trips.tripOption[2].slice[0].segment[0].duration}</p>
-    <p>Class, ${data.trips.tripOption[2].slice[0].segment[0].cabin}</p>
-    <p>Arrival Time, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].arrivalTime}</p>
-    <p>Departure Time, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].departureTime}</p>
-    <p>Origin, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].origin}</p>
-    <p>Destination, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].destination}</p>
-    <p>Flight Time, ${data.trips.tripOption[2].slice[0].segment[0].leg[0].duration}</p>
+    <p><span>Arrival Time:</span> ${data.trips.tripOption[0].slice[0].segment[0].leg[0].arrivalTime}</p>
+    <br>
+    <p><span>Flight Time:</span> ${data.trips.tripOption[0].slice[0].segment[0].leg[0].duration}m</p>
+    </div>
+    <div class="sale-total">
+    <p><span>Sale Total:</span> ${data.trips.tripOption[0].saleTotal}</p>
+    </div>
+    </div>
+    </div>
+
+    <div class="col-2">
+    <div class="trip">
+    <div class="journey">
+    <h5>Origin</h5><h5>Destination</h5>
+    <h6>${data.trips.tripOption[1].slice[0].segment[0].leg[0].origin}</h6><h6>${data.trips.tripOption[1].slice[0].segment[0].leg[0].destination}</h6>
+    </div>
+    <div class="class">
+    <p><span>Class:</span> ${data.trips.tripOption[1].slice[0].segment[0].cabin}</p>
+    </div>
+    <div class="flight-time">
+    <p><span>Departure Time:</span> ${data.trips.tripOption[1].slice[0].segment[0].leg[0].departureTime}</p>
+    <br>
+    <p><span>Arrival Time:</span> ${data.trips.tripOption[1].slice[0].segment[0].leg[0].arrivalTime}</p>
+    <br>
+    <p><span>Flight Time:</span> ${data.trips.tripOption[1].slice[0].segment[0].leg[0].duration}m</p>
+    </div>
+    <div class="sale-total">
+    <p><span>Sale Total</span> ${data.trips.tripOption[1].saleTotal}</p>
+    </div>
+    </div>
+    </div>
+
+
+    <div class="col-3">
+    <div class="trip">
+    <div class="journey">
+    <h5>Origin</h5><h5>Destination</h5>
+    <h6>${data.trips.tripOption[2].slice[0].segment[0].leg[0].origin}</h6><h6>${data.trips.tripOption[2].slice[0].segment[0].leg[0].destination}</h6>
+    </div>
+    <div class="class">
+    <p><span>Class:</span> ${data.trips.tripOption[2].slice[0].segment[0].cabin}</p>
+    </div>
+    <div class="flight-time">
+    <p><span>Departure Time:</span> ${data.trips.tripOption[2].slice[0].segment[0].leg[0].departureTime}</p>
+    <br>
+    <p><span>Arrival Time:</span> ${data.trips.tripOption[2].slice[0].segment[0].leg[0].arrivalTime}</p>
+    <br>
+    <p><span>Flight Time:</span> ${data.trips.tripOption[2].slice[0].segment[0].leg[0].duration}m</p>
+    </div>
+    <div class="sale-total">
+    <p><span>Sale Total:</span> ${data.trips.tripOption[2].saleTotal}</p>
+    </div>
+    </div>
+    </div>
+
+
 
     </div>
     <div class="modal-footer">

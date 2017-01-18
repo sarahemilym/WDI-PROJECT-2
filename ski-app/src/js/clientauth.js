@@ -2,13 +2,16 @@ const Auth = Auth || {};
 
 Auth.init = function(){
   this.apiUrl = 'http://localhost:3000/api';
+  console.log(this.apiUrl);
   this.$main  = $('main');
   console.log(Auth.currentUser);
   $('.register').on('click', this.register.bind(this));
   $('.login').on('click', this.login.bind(this));
   $('.logout').on('click', this.logout.bind(this));
   $('.usersShow').on('click', this.usersShow.bind(this));
+
   this.$main.on('submit', 'form', this.handleForm);
+  $('main').on('click', '#close', this.closeProfile);
 
   if (this.getToken()){
     this.loggedInState();
@@ -47,7 +50,7 @@ Auth.setCurrentUser = function() {
 Auth.register = function(e){
   if (e) e.preventDefault();
   $('.modal-content').html(`
-    <form method="post" action="/register">
+    <form method="post" action="api/register">
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title">Register</h4>
@@ -67,7 +70,7 @@ Auth.register = function(e){
     </div>
     <div class="form-group">
     <label for="user_passwordConfirmation">Confirm Password</label>
-    <input class="form-control" type="passwordConfirmation" name="user[passwordConfirmation]" id="user_passwordConfirmation" placeholder="Confirm Password">
+    <input class="form-control" type="password" name="user[passwordConfirmation]" id="user_passwordConfirmation" placeholder="Confirm Password">
     </div>
     </div>
     <div class="modal-footer">
@@ -83,7 +86,7 @@ Auth.register = function(e){
     if (e) e.preventDefault();
 
     this.$main.html(`
-      <h2 class="loggedOut">Login</h2>
+      <div class="login">
       <form method="post" action="/login" class="loggedOut">
       <div class="form-group">
       <input class="form-control" type="email" name="email" placeholder="Email">
@@ -91,8 +94,11 @@ Auth.register = function(e){
       <div class="form-group">
       <input class="form-control" type="password" name="password" placeholder="Password">
       </div>
-      <input class="btn btn-primary" type="submit" value="Login">
-      </form>`);
+      <input class="btn btn-primary login" type="submit" value="Login">
+      </form>
+      </div>
+      <div class="jumbotron loggedOut">
+      </div>`);
     };
 
     Auth.logout = function(e){
@@ -129,13 +135,17 @@ Auth.register = function(e){
           <h2 id="username">${Auth.currentUser.username}</h2>
           <p>${Auth.currentUser.email}</p>
           <ul class="list-inline">
-          <li><a href="#" class="usersEdit" data-id="${user._id}">Edit</a></li>
-          <li><a data-id="${user._id}" class="usersDelete" href="#">Delete</a></li>
+          <li><a id="close" href="#">Close</a></li>
           </ul>
           </div>
           </div>`);
         });
       };
+
+      Auth.closeProfile = function() {
+        $('main').hide();
+            };
+
 
       Auth.ajaxRequest = function(url, method, data, callback){
         return $.ajax({

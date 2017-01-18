@@ -1,16 +1,44 @@
-body {
+body.body {
   margin: 0;
+  font-family: 'Quicksand', sans-serif;
 }
 
-.dropdown {
-  height: 60px;
-  max-height: 60px;
-  overflow-y: scroll;
-  }
+.login {
+    input.form-control {
+      width: 238px;
+      float: left;
+      // margin: 0 auto;
+      height: 25px;
+    }
 }
+
+.user-tile {
+  padding: 14px;
+}
+
+h2.loggedOut {
+  text-align: center;
+}
+
+input.btn.btn-primary.login {
+  margin-left: 2px;
+  margin-top: -5px;
+  background: none;
+  color: black;
+  padding: -79px;
+  border: none;
+}
+
+.jumbotron {
+  background-image: url('../images/ski-background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 580px;
+}
+
 
 #map-canvas {
-  width: 80%;
+  width: 90%;
   height: 80vh;
   margin: 0 auto;
 }
@@ -24,24 +52,9 @@ div.form-group.flightForm {
   float: left;
 }
 
-input#flight_destination.form-control {
-  width: 60px;
-  height: 28px;
-}
-
-input#flight_date.form-control {
-  width: 60px;
-  height: 28px;
-}
-
-input#flight_passengers.form-control {
-  width: 60px;
-  height: 28px;
-}
-
-input#flight_origin.form-control {
-  width: 60px;
-  height: 28px;
+button#close.btn.btn-default.flightForm, button#search.btn.btn-primary.flightForm, input#flight_date.form-control, input#flight_destination.form-control, input#flight_origin.form-control, input#flight_passengers.form-control {
+    width: 180px;
+    height: 28px;
 }
 
 button#close.btn.btn-default.flightForm {
@@ -211,4 +224,46 @@ div.forecast-minmax, div.minmax-temp {
     font-weight: 700;
     padding: 11px;
   }
+}
+
+div.modal-body {
+  .trip {
+    border: 1px solid black;
+  }
+  div.journey {
+    border-bottom: 1px solid black;
+
+    h5 {
+      font-size: 14px;
+      display: inline;
+      text-align: center;
+      padding: 21px;
+      font-weight: bold;
+    }
+
+    h6 {
+      text-align: center;
+      font-size: 14px;
+      display: inline;
+      padding: 33px;
+    }
+  }
+
+  div.class {
+    border-bottom: 1px solid black;
+    padding-left: 10px;
+  }
+
+  div.flight-time {
+    border-bottom: 1px solid black;
+    padding-left: 10px;
+  }
+
+  div.sale-total{
+    padding-left: 10px;
+  }
+}
+
+span {
+  font-weight: bold;
 }
