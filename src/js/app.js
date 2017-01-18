@@ -127,7 +127,7 @@ googleMap.mapSetup = function() {
         ]
     }
 ],
-    center: new google.maps.LatLng(26.607066, 29.771936),
+    center: new google.maps.LatLng(41.327819, -3.694850),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
 
