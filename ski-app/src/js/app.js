@@ -277,6 +277,7 @@ googleMap.deleteMarkers = function() {
   googleMap.clearMarkers();
   markers = [];
   googleMap.map.setZoom(2);
+  googleMap.map.setCenter(26.607066, 29.771936);
 };
 
 
@@ -520,7 +521,7 @@ googleMap.displayFlights = function(data) {
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title">Flight Details</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body flight-details">
 
 
     <div class="col-1">
