@@ -1,7 +1,7 @@
 const Auth = Auth || {};
 
 Auth.init = function(){
-  this.apiUrl = 'http://localhost:3000/api';
+  this.apiUrl = 'https://ski-planner.herokuapp.com/api';
   console.log(this.apiUrl);
   this.$main  = $('main');
   console.log(Auth.currentUser);
@@ -11,6 +11,7 @@ Auth.init = function(){
   $('.usersShow').on('click', this.usersShow.bind(this));
 
   this.$main.on('submit', 'form', this.handleForm);
+  $('.modal').on('submit', 'form', this.handleForm);
   $('main').on('click', '#close', this.closeProfile);
 
   if (this.getToken()){
@@ -39,9 +40,8 @@ Auth.setCurrentUser = function() {
     const payload = token.split('.')[1];
     const decoded = JSON.parse(window.atob(payload));
     const userId = decoded.user;
-    console.log("userId: ", decoded.user);
 
-    Auth.ajaxRequest(`http://localhost:3000/api/users/${userId}`, 'GET', null, data => {
+    Auth.ajaxRequest(`https://ski-planner.herokuapp.com/api/users/${userId}`, 'GET', null, data => {
       Auth.currentUser = data;
     });
   }
@@ -50,37 +50,37 @@ Auth.setCurrentUser = function() {
 Auth.register = function(e){
   if (e) e.preventDefault();
   $('.modal-content').html(`
-    <form method="post" action="api/register">
-    <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">Register</h4>
-    </div>
-    <div class="modal-body">
-    <div class="form-group">
-    <label for="user_username">Username</label>
-    <input class="form-control" type="text" name="user[username]" id="user_username" placeholder="Username">
-    </div>
-    <div class="form-group">
-    <label for="user_email">Email</label>
-    <input class="form-control" type="email" name="user[email]" id="user_email" placeholder="Email">
-    </div>
-    <div class="form-group">
-    <label for="user_password">Password</label>
-    <input class="form-control" type="password" name="user[password]" id="user_password" placeholder="Password">
-    </div>
-    <div class="form-group">
-    <label for="user_passwordConfirmation">Confirm Password</label>
-    <input class="form-control" type="password" name="user[passwordConfirmation]" id="user_passwordConfirmation" placeholder="Confirm Password">
-    </div>
-    </div>
-    <div class="modal-footer">
-    <button type="submit" class="btn btn-primary register" value="Register">Register</button>
-    <button type="button" class="btn btn-default close-register" data-dismiss="modal">Close</button>
-    </div>
+    <form method="post" action="/register">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Register</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="user_username">Username</label>
+          <input class="form-control" type="text" name="user[username]" id="user_username" placeholder="Username">
+        </div>
+        <div class="form-group">
+          <label for="user_email">Email</label>
+          <input class="form-control" type="email" name="user[email]" id="user_email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label for="user_password">Password</label>
+          <input class="form-control" type="password" name="user[password]" id="user_password" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label for="user_passwordConfirmation">Confirm Password</label>
+          <input class="form-control" type="password" name="user[passwordConfirmation]" id="user_passwordConfirmation" placeholder="Confirm Password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary register" value="Register">Register</button>
+        <button type="button" class="btn btn-default close-register" data-dismiss="modal">Close</button>
+      </div>
     </form>`);
 
-    $('.modal').modal('show');
-  };
+  $('.modal').modal('show');
+};
 
   Auth.login = function(e) {
     if (e) e.preventDefault();
@@ -110,10 +110,11 @@ Auth.register = function(e){
 
     Auth.handleForm = function(e){
       if (e) e.preventDefault();
-
       const url    = `${Auth.apiUrl}${$(this).attr('action')}`;
       const method = $(this).attr('method');
       const data   = $(this).serialize();
+
+      $('.modal').modal('hide');
 
       return Auth.ajaxRequest(url, method, data, data => {
         if (data.token) Auth.setToken(data.token);

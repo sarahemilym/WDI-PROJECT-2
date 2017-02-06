@@ -138,7 +138,7 @@ googleMap.mapSetup = function() {
 };
 
 googleMap.getCountries = function() {
-  $.get('http://localhost:3000/api/resorts').done(data => {
+  $.get('https://ski-planner.herokuapp.com/api/resorts').done(data => {
     const codes = [];
     const resortValue = data.map(resort => resort.country);
     resortValue.some((code, idx) => {
@@ -226,7 +226,7 @@ googleMap.selectCountry = function(e) {
 };
 
 googleMap.getResorts = function($country) {
-  $.get('http://localhost:3000/api/resorts').done(data => {
+  $.get('https://ski-planner.herokuapp.com/api/resorts').done(data => {
     // console.log(data);
     if ($country){
       const filteredCountries = data.filter(d => d.country === $country);
@@ -324,7 +324,7 @@ googleMap.addMaps = function() {
   $('#map-canvas').on('click', '#flights', (e) => {
     if (e) e.preventDefault();
     console.log('clicked');
-    $.get('http://localhost:3000/api/skimaps').done(data => {
+    $.get('https://ski-planner.herokuapp.com/api/skimaps').done(data => {
       console.log(data);
     });
   });
