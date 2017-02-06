@@ -285,7 +285,7 @@ googleMap.addInWindowForResort = function(resort, marker) {
   google.maps.event.addListener(marker, 'click', () => {
     if (typeof googleMap.infoWindow !== 'undefined') googleMap.infoWindow.close();
     // console.log('clicked', 'lat' + resort.lat, 'lng' + resort.lng);
-    $.get(`http://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data){
+    $.get(`https://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data){
       const currentMain = Math.round(data.main.temp);
       const currentMin = Math.round(data.main.temp_min);
       const currentMax = Math.round(data.main.temp_max);
@@ -333,7 +333,7 @@ googleMap.addMaps = function() {
 googleMap.addForecast = function(resort) {
   $('#map-canvas').on('click', '#forecast', (e) => {
     if (e) e.preventDefault();
-    $.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data) {
+    $.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3`).done(function(data) {
 
       const mainTemp = Math.round(data.list[7].main.temp);
       const minTemp  = Math.round(data.list[7].main.temp_min);
