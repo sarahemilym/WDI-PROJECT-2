@@ -25,7 +25,9 @@ app.use('/api', expressJWT({ secret: config.secret })
   path: [
     { url: '/api/login', methods: ['POST'] },
     { url: '/api/register', methods: ['POST'] },
-    { url: '/api/resorts', methods: ['GET'] }
+    { url: '/api/resorts', methods: ['GET'] },
+    { url: '/api/resortForecast', methods: ['GET'] },
+    { url: '/api/resortWeather', methods: ['GET'] }
   ]
 }));
 app.use(jwtErrorHandler);

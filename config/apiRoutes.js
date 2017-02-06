@@ -20,5 +20,9 @@ router.route('/users/:id')
 
 router.route('/resorts')
   .get(resortsController.index);
+router.route('/resortWeather')
+  .get(resortsController.weather);
+router.route('/resortWeather')
+  .get(resortsController.forecast);
 
 module.exports = router;
