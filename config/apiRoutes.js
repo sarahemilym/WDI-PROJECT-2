@@ -22,7 +22,7 @@ router.route('/resorts')
   .get(resortsController.index);
 router.route('/resortWeather')
   .get(resortsController.weather);
-router.route('/resortWeather')
+router.route('/resortForecast')
   .get(resortsController.forecast);
 
 module.exports = router;
