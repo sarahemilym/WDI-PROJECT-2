@@ -9,7 +9,6 @@ function resortsIndex(req, res){
 }
 
 function resortsWeather(req, res){
-  console.log(req.query.oWeatherUrl);
   rp({
     uri: req.query.oWeatherUrl
   }).then(data => {

@@ -9,124 +9,124 @@ googleMap.mapSetup = function() {
   const mapOptions = {
     zoom: 2,
     styles: [
-    {
-        "featureType": "administrative",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "color": "#444444"
-            }
+      {
+        'featureType': 'administrative',
+        'elementType': 'labels.text.fill',
+        'stylers': [
+          {
+            'color': '#444444'
+          }
         ]
-    },
-    {
-        "featureType": "landscape.man_made",
-        "elementType": "labels",
-        "stylers": [
-            {
-                "visibility": "on"
-            }
+      },
+      {
+        'featureType': 'landscape.man_made',
+        'elementType': 'labels',
+        'stylers': [
+          {
+            'visibility': 'on'
+          }
         ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
+      },
+      {
+        'featureType': 'poi',
+        'elementType': 'all',
+        'stylers': [
+          {
+            'visibility': 'off'
+          }
         ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-            {
-                "saturation": -100
-            },
-            {
-                "lightness": 45
-            }
+      },
+      {
+        'featureType': 'road',
+        'elementType': 'all',
+        'stylers': [
+          {
+            'saturation': -100
+          },
+          {
+            'lightness': 45
+          }
         ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "simplified"
-            }
+      },
+      {
+        'featureType': 'road.highway',
+        'elementType': 'all',
+        'stylers': [
+          {
+            'visibility': 'simplified'
+          }
         ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "labels.icon",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
+      },
+      {
+        'featureType': 'road.arterial',
+        'elementType': 'labels.icon',
+        'stylers': [
+          {
+            'visibility': 'off'
+          }
         ]
-    },
-    {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
+      },
+      {
+        'featureType': 'transit',
+        'elementType': 'all',
+        'stylers': [
+          {
+            'visibility': 'off'
+          }
         ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#90a8b3"
-            }
+      },
+      {
+        'featureType': 'water',
+        'elementType': 'all',
+        'stylers': [
+          {
+            'color': '#90a8b3'
+          }
         ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels",
-        "stylers": [
-            {
-                "color": "#fefefe"
-            }
+      },
+      {
+        'featureType': 'water',
+        'elementType': 'labels',
+        'stylers': [
+          {
+            'color': '#fefefe'
+          }
         ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text",
-        "stylers": [
-            {
-                "weight": "0.01"
-            },
-            {
-                "lightness": "24"
-            },
-            {
-                "color": "#ffffff"
-            }
+      },
+      {
+        'featureType': 'water',
+        'elementType': 'labels.text',
+        'stylers': [
+          {
+            'weight': '0.01'
+          },
+          {
+            'lightness': '24'
+          },
+          {
+            'color': '#ffffff'
+          }
         ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "color": "#50707f"
-            }
+      },
+      {
+        'featureType': 'water',
+        'elementType': 'labels.text.fill',
+        'stylers': [
+          {
+            'color': '#50707f'
+          }
         ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text.stroke",
-        "stylers": [
-            {
-                "weight": "1"
-            }
+      },
+      {
+        'featureType': 'water',
+        'elementType': 'labels.text.stroke',
+        'stylers': [
+          {
+            'weight': '1'
+          }
         ]
-    }
-],
+      }
+    ],
     center: new google.maps.LatLng(42.937146, 25.503572),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -147,14 +147,9 @@ googleMap.getCountries = function() {
       }
     });
     googleMap.createDropdown(codes);
-    console.log(codes);
   });
 };
 
-
-    // const countryCodes = {
-    //   '38' : 'England"
-    // }
 const countryCodes = {
   '31': 'Canada',
   '184': 'USA',
@@ -206,28 +201,19 @@ const countryCodes = {
 
 googleMap.createDropdown = function(codes) {
   $.each(codes, function(i, val) {
-    console.log('countryCodesVal', countryCodes[val]); // this changes it to the word
-    // console.log(`countryCodes${val}`) - this is the number
     $('.dropdown-menu').append(`<li><a href="#" class="filter" value="${val}" id=${val}>${countryCodes[val]}</a></li>`);
   });
   $('.filter').on('click', googleMap.selectCountry);
 };
 
 googleMap.selectCountry = function(e) {
-  // console.log($(this).attr('value'), 'filter value');
   if (e) e.preventDefault();
   var $country = parseInt($(this).attr('value'));
-  console.log('country edit', typeof($country), $country);
-  // googleMap.getResorts($country);
-  console.log('clicked', this.innerHTML);
   googleMap.getResorts($country);
-  // console.log($country);
-
 };
 
 googleMap.getResorts = function($country) {
   $.get('https://ski-planner.herokuapp.com/api/resorts').done(data => {
-    // console.log(data);
     if ($country){
       const filteredCountries = data.filter(d => d.country === $country);
       this.loopThroughResorts(filteredCountries);
@@ -251,7 +237,7 @@ googleMap.createMarkerForResort = function(resort) {
     scaledSize: new google.maps.Size(20, 20),
     origin: new google.maps.Point(0,0),
     anchor: new google.maps.Point(0, 0)
-};
+  };
   const latlng = new google.maps.LatLng(resort.lat, resort.lng);
   const marker = new google.maps.Marker({
     position: latlng,
@@ -284,14 +270,11 @@ googleMap.deleteMarkers = function() {
 googleMap.addInWindowForResort = function(resort, marker) {
   google.maps.event.addListener(marker, 'click', () => {
     if (typeof googleMap.infoWindow !== 'undefined') googleMap.infoWindow.close();
-    // console.log('clicked', 'lat' + resort.lat, 'lng' + resort.lng);
     $.get('https://ski-planner.herokuapp.com/api/resortWeather', { oWeatherUrl: `http://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3` }).done(function(data){
       data = $.parseJSON(data);
       const currentMain = Math.round(data.main.temp);
       const currentMin = Math.round(data.main.temp_min);
       const currentMax = Math.round(data.main.temp_max);
-      // console.log(data);
-      // console.log(typeof googleMap.infoWindow, 'infowindow');
       googleMap.infoWindow = new google.maps.InfoWindow({
         content: `<div class="weather-infoWindow"><h4>${resort.name}</h4><h4 class="modal-title">Current Weather</h4>
         <div class="weather-container">
@@ -320,14 +303,9 @@ googleMap.addInWindowForResort = function(resort, marker) {
   });
 };
 
-//      <input type="button" id="forecast">3 Day Forecast</input>
 googleMap.addMaps = function() {
   $('#map-canvas').on('click', '#flights', (e) => {
     if (e) e.preventDefault();
-    console.log('clicked');
-    $.get('https://ski-planner.herokuapp.com/api/skimaps').done(data => {
-      console.log(data);
-    });
   });
 };
 
@@ -456,21 +434,17 @@ googleMap.openFlightForm = function() {
 };
 
 googleMap.checkbox = function() {
-  console.log('clicked');
   if ($('#cb').is(':checked')) {
-    console.log('checked');
     $('#cb').val(0);
   } else {
-      $('#cb').val('off');
+    $('#cb').val('off');
   }
-  console.log($('#cb').val());
 };
 
 googleMap.findFlights = function() {
   $('main').on('click', '#close', googleMap.hideFlightForm);
   $('main').on('click', '#search', (e) => {
     googleMap.hideFlightForm();
-    console.log('clicked');
     if (e) e.preventDefault();
 
     const $origin = $('#flight_origin').val().toString();
@@ -497,16 +471,13 @@ googleMap.findFlights = function() {
       }
     };
 
-    console.log(FlightRequest);
-
     $.ajax({
       type: 'POST',
       url: 'https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyBeNMXTnV9y9muXtJCm-5BlC5sG1YRsVA0',
-      contentType: 'application/json', // Set Content-type: application/json
+      contentType: 'application/json',
       dataType: 'json',
       data: JSON.stringify(FlightRequest),
       success: function (data) {
-        console.log(JSON.stringify(data));
         googleMap.displayFlights(data);
       },
       error: function(){

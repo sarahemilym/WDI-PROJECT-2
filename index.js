@@ -3,7 +3,6 @@ const morgan     = require('morgan');
 const mongoose   = require('mongoose');
 const bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
-// const Resort = require('./models/resort');
 const rp         = require('request-promise');
 const cors       = require('cors');
 const expressJWT = require('express-jwt');

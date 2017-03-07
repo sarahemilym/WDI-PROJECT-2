@@ -2,9 +2,7 @@ const Auth = Auth || {};
 
 Auth.init = function(){
   this.apiUrl = 'https://ski-planner.herokuapp.com/api';
-  console.log(this.apiUrl);
   this.$main  = $('main');
-  console.log(Auth.currentUser);
   $('.register').on('click', this.register.bind(this));
   $('.login').on('click', this.login.bind(this));
   $('.logout').on('click', this.logout.bind(this));
@@ -82,100 +80,98 @@ Auth.register = function(e){
   $('.modal').modal('show');
 };
 
-  Auth.login = function(e) {
-    if (e) e.preventDefault();
+Auth.login = function(e) {
+  if (e) e.preventDefault();
 
-    this.$main.html(`
-      <div class="login">
+  this.$main.html(`
+    <div class="login">
       <form method="post" action="/login" class="loggedOut">
-      <div class="form-group">
-      <input class="form-control" type="email" name="email" placeholder="Email">
+        <div class="form-group">
+          <input class="form-control" type="email" name="email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <input class="btn btn-primary login" type="submit" value="Login">
+        </form>
       </div>
-      <div class="form-group">
-      <input class="form-control" type="password" name="password" placeholder="Password">
-      </div>
-      <input class="btn btn-primary login" type="submit" value="Login">
-      </form>
-      </div>
-      <div class="jumbotron loggedOut">
-      </div>`);
-    };
+    <div class="jumbotron loggedOut">
+  </div>`);
+};
 
-    Auth.logout = function(e){
-      if (e) e.preventDefault();
-      this.removeToken();
-      this.loggedOutState();
-    };
+Auth.logout = function(e){
+  if (e) e.preventDefault();
+  this.removeToken();
+  this.loggedOutState();
+};
 
 
-    Auth.handleForm = function(e){
-      if (e) e.preventDefault();
-      const url    = `${Auth.apiUrl}${$(this).attr('action')}`;
-      const method = $(this).attr('method');
-      const data   = $(this).serialize();
+Auth.handleForm = function(e){
+  if (e) e.preventDefault();
+  const url    = `${Auth.apiUrl}${$(this).attr('action')}`;
+  const method = $(this).attr('method');
+  const data   = $(this).serialize();
 
-      $('.modal').modal('hide');
+  $('.modal').modal('hide');
 
-      return Auth.ajaxRequest(url, method, data, data => {
-        if (data.token) Auth.setToken(data.token);
-        Auth.loggedInState();
-      });
-    };
+  return Auth.ajaxRequest(url, method, data, data => {
+    if (data.token) Auth.setToken(data.token);
+    Auth.loggedInState();
+  });
+};
 
-    Auth.usersShow = function(e){
-      if (e) e.preventDefault();
+Auth.usersShow = function(e){
+  if (e) e.preventDefault();
 
-      $.ajax({
-        method: 'GET',
-        url: `${Auth.apiUrl}/users/${Auth.currentUser._id}`,
-        beforeSend: this.setRequestHeader.bind(this)
-      }).done(user => {
-        $('main').html(`
-          <div class="user">
-          <div class="user-tile">
+  $.ajax({
+    method: 'GET',
+    url: `${Auth.apiUrl}/users/${Auth.currentUser._id}`,
+    beforeSend: this.setRequestHeader.bind(this)
+  }).done(user => {
+    $('main').html(`
+      <div class="user">
+        <div class="user-tile">
           <h2 id="username">${Auth.currentUser.username}</h2>
           <p>${Auth.currentUser.email}</p>
           <ul class="list-inline">
-          <li><a id="close" href="#">Close</a></li>
+            <li><a id="close" href="#">Close</a></li>
           </ul>
-          </div>
-          </div>`);
-        });
-      };
+        </div>
+      </div>`);
+  });
+};
 
-      Auth.closeProfile = function() {
-        $('main').hide();
-            };
-
-
-      Auth.ajaxRequest = function(url, method, data, callback){
-        return $.ajax({
-          url,
-          method,
-          data,
-          beforeSend: this.setRequestHeader.bind(this)
-        })
-        .done(callback)
-        .fail(data => {
-          console.log(data);
-        });
-      };
-
-      Auth.setRequestHeader = function(xhr) {
-        return xhr.setRequestHeader('Authorization', `Bearer ${this.getToken()}`);
-      };
-
-      Auth.setToken = function(token) {
-        return window.localStorage.setItem('token', token);
-      };
-
-      Auth.getToken = function() {
-        return window.localStorage.getItem('token');
-      };
-
-      Auth.removeToken = function() {
-        return window.localStorage.clear();
-      };
+Auth.closeProfile = function() {
+  $('main').hide();
+};
 
 
-      $(Auth.init.bind(Auth));
+Auth.ajaxRequest = function(url, method, data, callback){
+  return $.ajax({
+    url,
+    method,
+    data,
+    beforeSend: this.setRequestHeader.bind(this)
+  }).done(callback)
+    .fail(data => {
+      console.log('failed', data);
+    });
+};
+
+Auth.setRequestHeader = function(xhr) {
+  return xhr.setRequestHeader('Authorization', `Bearer ${this.getToken()}`);
+};
+
+Auth.setToken = function(token) {
+  return window.localStorage.setItem('token', token);
+};
+
+Auth.getToken = function() {
+  return window.localStorage.getItem('token');
+};
+
+Auth.removeToken = function() {
+  return window.localStorage.clear();
+};
+
+$(Auth.init.bind(Auth));
