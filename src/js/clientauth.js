@@ -129,20 +129,18 @@ Auth.usersShow = function(e){
     beforeSend: this.setRequestHeader.bind(this)
   }).done(user => {
     $('main').html(`
-      <div class="user">
         <div class="user-tile">
           <h2 id="username">${Auth.currentUser.username}</h2>
           <p>${Auth.currentUser.email}</p>
           <ul class="list-inline">
             <li><a id="close" href="#">Close</a></li>
           </ul>
-        </div>
       </div>`);
   });
 };
 
 Auth.closeProfile = function() {
-  $('main').hide();
+  $('.user-tile').hide();
 };
 
 
