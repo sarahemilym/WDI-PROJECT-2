@@ -138,14 +138,13 @@ Auth.usersShow = function(e){
   }).done(user => {
     $('main').html(`
         <div class="user-tile">
-          <h2 id="username">${Auth.currentUser.username}</h2>
-          <h4>${Auth.currentUser.firstName} ${Auth.currentUser.lastName}</h4>
+          <h2>${Auth.currentUser.firstName} ${Auth.currentUser.lastName}</h2>
+          <h4> id="username">${Auth.currentUser.username}</h4>
           <p>${Auth.currentUser.email}</p>
           <ul class="list-inline">
             <li><a id="close" href="#">Close</a></li>
           </ul>
       </div>`);
-      console.log('currentUser', Auth.currentUser)
   });
 };
 
