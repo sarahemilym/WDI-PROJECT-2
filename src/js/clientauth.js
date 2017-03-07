@@ -54,6 +54,14 @@ Auth.register = function(e){
         <h4 class="modal-title">Register</h4>
       </div>
       <div class="modal-body">
+      <div class="form-group">
+        <label for="user_firstName">First Name</label>
+        <input class="form-control" type="text" name="user[firstName]" id="user_firstName" placeholder="First Name">
+      </div>
+      <div class="form-group">
+      <label for="user_lastName">Last Name</label>
+      <input class="form-control" type="text" name="user[lastName]" id="user_lastName" placeholder="Last Name">
+    </div>
         <div class="form-group">
           <label for="user_username">Username</label>
           <input class="form-control" type="text" name="user[username]" id="user_username" placeholder="Username">
@@ -131,11 +139,13 @@ Auth.usersShow = function(e){
     $('main').html(`
         <div class="user-tile">
           <h2 id="username">${Auth.currentUser.username}</h2>
+          <h4>${Auth.currentUser.firstName} ${Auth.currentUser.lastName}</h4>
           <p>${Auth.currentUser.email}</p>
           <ul class="list-inline">
             <li><a id="close" href="#">Close</a></li>
           </ul>
       </div>`);
+      console.log('currentUser', Auth.currentUser)
   });
 };
 

@@ -1,6 +1,11 @@
 body.body {
   margin: 0;
   font-family: 'Quicksand', sans-serif;
+  background: #fafcfd;
+}
+
+.flightForm {
+  margin-bottom: 28px;
 }
 
 .login {
@@ -13,11 +18,62 @@ body.body {
 
 .user-tile {
   padding: 14px;
+  margin-bottom: 28px;
 }
 
 h2.loggedOut {
   text-align: center;
 }
+
+nav.navbar.navbar-default{
+  background-color: #fafcfd;
+  border: none;
+  font-family: 'Quicksand', sans-serif;
+}
+
+nav.navbar.navbar-default .navbar-brand {
+  color: #90a8b3;
+  font-family: 'Quicksand', sans-serif;
+}
+
+nav.navbar.navbar-default .navbar-brand:hover {
+  background-color: #90a8b3;
+  color: #fafcfd;
+}
+
+nav.navbar.navbar-default .navbar-nav>li>a {
+  color: #90a8b3;
+  font-family: 'Quicksand', sans-serif;
+}
+
+nav.navbar.navbar-default .navbar-nav>li>a:hover {
+  background-color: #90a8b3;
+  color: #fafcfd;
+}
+
+ul.dropdown-menu.scrollable-menu {
+  background-color: #fafcfd;
+  overflow-y: scroll;
+  max-height: 171px;
+  color: #90a8b3;
+  font-family: 'Quicksand', sans-serif;
+}
+
+ul.dropdown-menu>li>a {
+  background-color: #fafcfd;
+  color: #90a8b3;
+  font-family: 'Quicksand', sans-serif;
+}
+
+ul.dropdown-menu>li>a:hover {
+  color: #fafcfd;
+  background-color: #90a8b3;
+}
+nav.navbar.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+  background: #C1CFD6;
+  color: #fafcfd;
+}
+
 
 input.btn.btn-primary.login, button.btn.btn-primary.register, button.btn.btn-default.close-register, button#close.btn.btn-default, button#search.btn.btn-primary, button.btn.btn-default, button#forecast.btn.btn-primary {
   margin-left: 2px;
@@ -74,9 +130,11 @@ button#close.btn.btn-default.flightForm {
   width: 60px;
   height: 28px;
 }
-button#search.btn.btn-primary.flightForm {
-  width: 60px;
+button#search.btn.btn-primary {
+  width: 69px;
   height: 28px;
+  background: #90a8b3;
+  text-align: center;
 }
 
 .modal-header {
