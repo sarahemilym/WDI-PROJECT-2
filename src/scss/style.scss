@@ -31,12 +31,19 @@ h2.loggedOut {
   width: 87px;
 }
 
+a.navbar-brand.logo {
+  background-image: url('../images/snowglobe-logo.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 82px;
+  width: 113px;
+}
 
 nav.navbar.navbar-default{
   background-color: #fafcfd;
   border: none;
   font-family: 'Quicksand', sans-serif;
-  height: 71px;
+  height: 85px;
 }
 
 nav.navbar.navbar-default .navbar-brand {
