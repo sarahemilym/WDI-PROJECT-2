@@ -1,7 +1,7 @@
 const Auth = Auth || {};
 
 Auth.init = function(){
-  this.apiUrl = 'https://ski-planner.herokuapp.com/api';
+  this.apiUrl = 'https://snowglobe.herokuapp.com/api';
   this.$main  = $('main');
   $('.register').on('click', this.register.bind(this));
   $('.login').on('click', this.login.bind(this));
@@ -39,7 +39,7 @@ Auth.setCurrentUser = function() {
     const decoded = JSON.parse(window.atob(payload));
     const userId = decoded.user;
 
-    Auth.ajaxRequest(`https://ski-planner.herokuapp.com/api/users/${userId}`, 'GET', null, data => {
+    Auth.ajaxRequest(`https://snowglobe.herokuapp.com/api/users/${userId}`, 'GET', null, data => {
       Auth.currentUser = data;
     });
   }

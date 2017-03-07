@@ -138,7 +138,7 @@ googleMap.mapSetup = function() {
 };
 
 googleMap.getCountries = function() {
-  $.get('https://ski-planner.herokuapp.com/api/resorts').done(data => {
+  $.get('https://snowglobe.herokuapp.com/api/resorts').done(data => {
     const codes = [];
     const resortValue = data.map(resort => resort.country);
     resortValue.some((code, idx) => {
@@ -213,7 +213,7 @@ googleMap.selectCountry = function(e) {
 };
 
 googleMap.getResorts = function($country) {
-  $.get('https://ski-planner.herokuapp.com/api/resorts').done(data => {
+  $.get('https://snowglobe.herokuapp.com/api/resorts').done(data => {
     if ($country){
       const filteredCountries = data.filter(d => d.country === $country);
       this.loopThroughResorts(filteredCountries);
@@ -270,7 +270,7 @@ googleMap.deleteMarkers = function() {
 googleMap.addInWindowForResort = function(resort, marker) {
   google.maps.event.addListener(marker, 'click', () => {
     if (typeof googleMap.infoWindow !== 'undefined') googleMap.infoWindow.close();
-    $.get('https://ski-planner.herokuapp.com/api/resortWeather', { oWeatherUrl: `http://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3` }).done(function(data){
+    $.get('https://snowglobe.herokuapp.com/api/resortWeather', { oWeatherUrl: `http://api.openweathermap.org/data/2.5/weather?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3` }).done(function(data){
       data = $.parseJSON(data);
       const currentMain = Math.round(data.main.temp);
       const currentMin = Math.round(data.main.temp_min);
@@ -312,7 +312,7 @@ googleMap.addMaps = function() {
 googleMap.addForecast = function(resort) {
   $('#map-canvas').on('click', '#forecast', (e) => {
     if (e) e.preventDefault();
-    $.get('https://ski-planner.herokuapp.com/api/resortForecast', { oWeatherUrl: `http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3` }).done(function(data) {
+    $.get('https://snowglobe.herokuapp.com/api/resortForecast', { oWeatherUrl: `http://api.openweathermap.org/data/2.5/forecast?lat=${resort.lat}&lon=${resort.lng}&units=metric&APPID=17716dc84c929276085ec7322162e7f3` }).done(function(data) {
       data = $.parseJSON(data);
       const mainTemp = Math.round(data.list[7].main.temp);
       const minTemp  = Math.round(data.list[7].main.temp_min);
