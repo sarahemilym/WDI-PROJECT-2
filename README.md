@@ -2,7 +2,6 @@
 ![wdi](https://cloud.githubusercontent.com/assets/20629455/23824363/2ddeaa7e-066d-11e7-8630-f7c890c9f1c1.png)
 
 ___
-<br>
 ## Snow Globe
 
 #### Overview
